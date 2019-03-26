@@ -1,0 +1,59 @@
+{% extends 'ctf/base.html' %}
+{% block content %}
+    <h1>Challenges</h1>
+    {% if challenge_list %}
+        <div id="accordion">
+            {% for value, text in challenge_list.first.categories %}
+                <div class="card">
+                    <div class="card-header" id="heading{{ text }}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ text }}"
+                                    aria-expanded="false" aria-controls="collapse{{ text }}">
+                                {{ text }}
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapse{{ text }}" class="collapse" aria-labelledby="heading{{ text }}"
+                         data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Points</th>
+                                    <th scope="col">Solved Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for challenge in challenge_list %}
+                                    {% if challenge.category == value %}
+                                        <tr>
+
+                                            {% if challenge.team_solved == True %}
+                                                <td>
+                                                    <a href="{% url 'challenge-detail' challenge.id %}">{{ challenge.name }}</a>&nbsp;<span
+                                                        class="badge badge-success">Solved</span></td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="{% url 'challenge-detail' challenge.id %}">{{ challenge.name }}</a>
+                                                </td>
+                                            {% endif %}
+
+                                            <td>{{ challenge.points }}</td>
+                                            <td>{{ challenge.solved }}</td>
+                                        </tr>
+
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No challenges are available</p>
+    {% endif %}
+{% endblock %}

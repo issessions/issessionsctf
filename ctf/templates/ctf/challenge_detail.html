@@ -1,0 +1,50 @@
+{% extends 'ctf/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">{{ challenge.name }}</h1>
+            <hr class="my-4">
+            <p class="lead">{{ challenge.description }}<br>({{ challenge.points }} Points)</p>
+            {% if challenge.link != "" %}
+                <p class="text-center"><a href="{{ challenge.link }}" class="btn btn-secondary btn-lg" role="button"
+                                          target="_blank">Go To
+                    Challenge</a></p>
+            {% endif %}
+            {% if challenge.file %}
+                <p class="text-center"><a href="{{ challenge.file.url }}" class="btn btn-secondary btn-lg" role="button"
+                                          target="_blank">Download File</a></p>
+            {% endif %}
+
+        </div>
+        <hr class="my-4">
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Submit Flag</h2>
+                <form action="{% url 'submit-flag' challenge.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="flag">Challenge Flag</label>
+                        <input type="text" class="form-control" id="flag" name="flag" aria-describedby="flagHelp"
+                               placeholder="FLAG-##########">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-4">&nbsp;</div>
+            <div class="col-md-4">
+                <h2>Hint</h2>
+                <p>Reminder: Viewing the hint reduces the number of points a challenge is worth.</p>
+                <p><a href="" class="btn btn-primary btn-lg">Show Hint</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
