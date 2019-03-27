@@ -21,7 +21,9 @@
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Points</th>
+                                    <th scope="col">Flags</th>
                                     <th scope="col">Solved Count</th>
+                                    <th scope="col">Last Solved</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -30,18 +32,22 @@
                                     {% if challenge.category == value %}
                                         <tr>
 
-                                            {% if challenge.team_solved == True %}
+                                            <td>
+                                                <a href="{% url 'challenge-detail' challenge.id %}">{{ challenge.name }}</a>
+                                            </td>
+                                            <td>
+                                                {{ challenge.points }}
+                                            </td>
+                                            <td>
+                                                {{ challenge.flag_count }}
+                                            </td>
                                                 <td>
-                                                    <a href="{% url 'challenge-detail' challenge.id %}">{{ challenge.name }}</a>&nbsp;<span
-                                                        class="badge badge-success">Solved</span></td>
-                                            {% else %}
-                                                <td>
-                                                    <a href="{% url 'challenge-detail' challenge.id %}">{{ challenge.name }}</a>
-                                                </td>
-                                            {% endif %}
 
-                                            <td>{{ challenge.points }}</td>
-                                            <td>{{ challenge.solved }}</td>
+                                                </td>
+                                                <td>
+
+                                                </td>
+
                                         </tr>
 
                                     {% endif %}

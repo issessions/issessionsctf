@@ -1,3 +1,6 @@
+from binascii import hexlify
+from os import urandom
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
@@ -10,6 +13,9 @@ class Sponsor(models.Model):
     name = models.CharField(max_length=256)
     text = models.TextField()
     logo = models.FileField(upload_to='sponsor_logos/', blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Contest(models.Model):
@@ -31,6 +37,9 @@ class Contest(models.Model):
             return Contest.objects.get(active=True)
         except Contest.DoesNotExist:
             return None
+
+    def __str__(self):
+        return self.name
 
 
 class Sponsorship(models.Model):
@@ -78,16 +87,6 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class Flag(models.Model):
-    name = models.CharField(max_length=200)
-    flag = models.CharField(max_length=50, blank=False)
-    points = models.IntegerField()
-    hint = models.TextField()
-    penalty = models.IntegerField()
-    solved = models.IntegerField(default=0)
-    last_solved = models.DateTimeField(blank=True, null=True)
-
-
 class Challenge(models.Model):
     categories = (
         ('PROGRAMMING', 'Programming'),
@@ -109,6 +108,10 @@ class Challenge(models.Model):
     link = models.URLField(blank=True, default="")
     file = models.FileField(upload_to='uploads/', blank=True)
     active = models.BooleanField(default=True)
+    dynamic_link = models.BooleanField(default=False, blank=True)
+
+    class Meta:
+        ordering = ("category", "name")
 
     @staticmethod
     def current(**kwargs):
@@ -116,8 +119,36 @@ class Challenge(models.Model):
 
         return Challenge.objects.filter(contest__active=True, **kwargs)
 
+    def __str__(self):
+        return self.name
+
+    def points(self):
+        return sum(flag.points for flag in self.flags.all())
+
+    def flag_count(self):
+        return len(self.flags.all())
+
+
+class Flag(models.Model):
+    name = models.CharField(max_length=200)
+    flag = models.CharField(max_length=50)
+    points = models.IntegerField()
+    hint = models.TextField()
+    penalty = models.IntegerField()
+    solved = models.IntegerField(default=0)
+    last_solved = models.DateTimeField(blank=True, null=True)
+    challenge = models.ForeignKey(Challenge, related_name="flags", on_delete=models.CASCADE, blank=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Team(models.Model):
+
+    @staticmethod
+    def create_secret():
+        return hexlify(urandom(10)).decode('utf-8').upper()
+
     # Competition
     contest = models.ForeignKey(Contest, related_name="teams", on_delete=models.CASCADE)
 
@@ -125,7 +156,11 @@ class Team(models.Model):
     members = models.ManyToManyField(User, blank=True, related_name="teams")
 
     # Which problems this team has solved
-    solved = models.ManyToManyField(Challenge, blank=True, related_name="solvers")
+    solved = models.ManyToManyField(Flag, blank=True, related_name="solvers")
+
+    # Which hints has this team accessed
+    hints = models.ManyToManyField(Flag, blank=True, related_name="hints")
+
 
     # Information about team
     name = models.CharField(max_length=64)
@@ -133,6 +168,9 @@ class Team(models.Model):
 
     score = models.IntegerField(default=0)
     score_last = models.DateTimeField(default=timezone.now)
+
+    # Some challenges (like ones with dynamic links) use a team secret or special value to build urls
+    secret = models.CharField(max_length=30, default=create_secret.__func__)
 
     # Meta model attributes
     class Meta:
@@ -153,7 +191,7 @@ class Submission(models.Model):
 
     # Link to team and problem
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='solves')
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name='solves')
+    flag = models.ForeignKey(Flag, on_delete=models.CASCADE, related_name='solves')
 
     # Time and correctness
     time = models.DateTimeField(default=timezone.now)
@@ -161,10 +199,10 @@ class Submission(models.Model):
 
     # Guess and new score
     guess = models.CharField(max_length=128, default="")
-    new_score = models.IntegerField(default=0)
+    hinted = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('time',)
 
     def __str__(self):
-        return "{} submitted {} at {}".format(self.team, self.challenge, self.time)
+        return "{} submitted {} at {}: {}".format(self.team, self.flag, self.time, self.correct)

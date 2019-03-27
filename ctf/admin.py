@@ -1,28 +1,40 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from ctf.models import *
 
 
-# Some Django magic to associate Profiles with Users
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-    verbose_name_plural = "profile"
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'members']
+    list_display = ('name', 'contest', 'active', 'score', 'secret')
+    list_filter = ('contest',)
+    fields = [('contest', 'active'), ('name'), ('members'), ('secret')]
+    filter_horizontal = ('members',)
+    readonly_fields = ['secret']
 
 
-class UserAdmin(UserAdmin):
-    inlines = (ProfileInline,)
+class FlagInline(admin.TabularInline):
+    model = Flag
+    fields = [('name'), ('flag'), ('points'), ('penalty'), ('hint')]
 
 
-# Register the combined user models with Django
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+@admin.register(Challenge)
+class ChallengeAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'description']
+    list_display = ('name', 'category', 'points', 'flag_count', 'active')
+    list_filter = ('category',)
+    fields = [('contest', 'active'), ('name', 'category'), ('link', 'dynamic_link'), ('file')]
+    inlines = [FlagInline]
+
+
+@admin.register(Submission)
+class SubmissionAdmin(admin.ModelAdmin):
+    date_hierarchy = 'time'
+    search_fields = ['team']
+    list_display = ('team', 'flag', 'time', 'correct', 'guess', 'hinted')
+    list_filter = ('team', 'correct')
+
 
 # Register models
-admin.site.register(Challenge)
-admin.site.register(Profile)
-admin.site.register(Submission)
-admin.site.register(Team)
 admin.site.register(Contest)
 admin.site.register(Sponsor)

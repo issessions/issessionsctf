@@ -11,27 +11,6 @@ from django.views import generic
 from ctf.models import Challenge, Submission, Team
 
 
-class ChallengeIndexView(LoginRequiredMixin, generic.ListView):
-    login_url = "/"
-    context_object_name = 'challenge_list'
-
-    def get_queryset(self):
-        challenge_list = Challenge.objects.order_by('category')
-        submission_list = Submission.objects.filter(team=self.request.user.profile.current_team, correct=True).values(
-            'challenge')
-        for challenge in challenge_list:
-            challenge.team_solved = False
-            for submission in submission_list:
-                if challenge.id == submission['challenge']:
-                    challenge.team_solved = True
-        return challenge_list
-
-    def get_context_data(self, **kwargs):
-        context = super(ChallengeIndexView, self).get_context_data(**kwargs)
-        context['challenge_page'] = "active"
-        return context
-
-
 def scoreboard(request):
     template_name = 'ctf/scoreboard.html'
     team_list = Team.objects.all().order_by('-score')
@@ -40,6 +19,44 @@ def scoreboard(request):
     context = {'team_list': team_list}
     context['scoreboard_page'] = "active"
     return render(request, 'ctf/scoreboard.html', context)
+
+
+def ctflogin(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+    else:
+        pass
+    response = HttpResponse(status=302)
+    response['Location'] = '/'
+    return response
+
+
+class ChallengeIndexView(LoginRequiredMixin, generic.ListView):
+    login_url = "/"
+    context_object_name = 'challenge_list'
+
+    def get_queryset(self):
+        challenge_list = Challenge.objects.order_by('category')
+        return challenge_list
+
+    def get_context_data(self, **kwargs):
+        context = super(ChallengeIndexView, self).get_context_data(**kwargs)
+        context['challenge_page'] = "active"
+        return context
+
+
+class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Challenge
+    login_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super(ChallengeDetailView, self).get_context_data(**kwargs)
+        context['challenge_page'] = "active"
+        context['team'] = self.request.user.profile.current_team
+        return context
 
 
 @login_required(login_url="scoreboard")
@@ -68,27 +85,3 @@ def submit_flag(request, pk):
         messages.add_message(request, messages.INFO, "Your team has already solved this challenge")
 
     return redirect(request.META['HTTP_REFERER'])
-
-
-def ctflogin(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-    else:
-        pass
-    response = HttpResponse(status=302)
-    response['Location'] = '/'
-    return response
-
-
-class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Challenge
-    login_url = "/"
-
-    def get_context_data(self, **kwargs):
-        context = super(ChallengeDetailView, self).get_context_data(**kwargs)
-        context['challenge_page'] = "active"
-        context['team'] = self.request.user.profile.current_team
-        return context
