@@ -13,7 +13,7 @@ from ctf.models import Challenge, Submission, Team
 
 def scoreboard(request):
     template_name = 'ctf/scoreboard.html'
-    team_list = Team.objects.all().order_by('-score')
+    team_list = Team.objects.filter(active=True).order_by('-score')
     for team in team_list:
         team.solved_count = team.solved.count()
     context = {'team_list': team_list}
@@ -39,7 +39,7 @@ class ChallengeIndexView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'challenge_list'
 
     def get_queryset(self):
-        challenge_list = Challenge.objects.order_by('category')
+        challenge_list = Challenge.objects.filter(active=True).order_by('category')
         return challenge_list
 
     def get_context_data(self, **kwargs):
