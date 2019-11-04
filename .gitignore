@@ -1,6 +1,10 @@
 # Created by https://www.gitignore.io/api/pycharm,python,django
 # Edit at https://www.gitignore.io/?templates=pycharm,python,django
 
+### Developer-Defined Pattern ###
+venv/
+.idea/
+
 ### Django ###
 *.log
 *.pot

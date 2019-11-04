@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  django:
+    image: iss-dev:django
+    build: 
+      context: ./django
+    ports: 
+    - 8000:8000
+    depends_on:
+    - postgres
+    - memcached
+    container_name: django-dev
+    volumes:
+    - ./django:/usr/src/app
+    networks:
+    - issessions
+
+  postgres:
+    image: iss-dev:postgres
+    build:
+      context: ./postgres
+    ports: 
+    - 5432:5432
+    container_name: postgresql
+    networks:
+    - issessions
+
+  memcached:
+    image: iss-dev:memcached
+    build: ./memcached
+    ports:
+    - 11211:11211
+    container_name: memcached
+    networks:
+    - issessions
+
+networks:
+  issessions:
+
