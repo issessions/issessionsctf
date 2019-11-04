@@ -19,6 +19,4 @@ else
   >&2 echo "Postgresql database already setup"
 fi
 
->&2 echo -e "\n----------------------------\nStarting server on port 8000\n----------------------------" 
 python3 manage.py runserver 0.0.0.0:8000
-
