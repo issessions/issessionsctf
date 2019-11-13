@@ -128,20 +128,33 @@ MEDIA_URL = '/media/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-# Baseline configuration.j
-AUTH_LDAP_SERVER_URI = "ldap://192.168.151.131"
+# Baseline configuration
 
-AUTH_LDAP_BIND_DN = "cn=django django,ou=applications,dc=issessions,dc=ca"
+AUTH_LDAP_SERVER_URI = "ldap://ZENTYAL.issessions.ca/"
+
+BASE_DN = "dc=issessions,dc=ca"
+BIND_OU = "ou=applications"
+BIND_DN = "cn=django django" + "," + BIND_OU + "," + BASE_DN
+USER_SEARCH_OU = "ou=ctf"
+GROUP_SEARCH_OU = "ou=ctf"
+USER_SEARCH_DN = USER_SEARCH_OU + "," + BASE_DN
+GROUP_SEARCH_DN = GROUP_SEARCH_OU + "," + BASE_DN
+ACTIVE_USERS_GROUP_DN = "cn=ctf_active," + GROUP_SEARCH_DN
+DISABLED_USERS_GROUP_DN = "cn=ctf_disabled," + GROUP_SEARCH_DN
+CTF_STAFF_GROUP_DN = "cn=ctf_staff," + GROUP_SEARCH_DN
+CTF_TEAMS_GROUP_DN = "cn=ctf_teams," + GROUP_SEARCH_DN
+
+AUTH_LDAP_BIND_DN = BIND_DN
 AUTH_LDAP_BIND_PASSWORD = "django"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    "ou=ctf,dc=issessions,dc=ca", ldap.SCOPE_SUBTREE, "(cn=%(user)s)"
+    USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sn=%(user)s)"
 )
 # Or:
 # AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s,ou=users,dc=example,dc=com'
 
 # Set up the basic group parameters.
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-    "ou=ctf,dc=issessions,dc=ca",
+    GROUP_SEARCH_DN,
     ldap.SCOPE_SUBTREE,
     "(objectClass=groupOfNames)",
 )
@@ -150,12 +163,15 @@ AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 # group restrictions
 
 AUTH_LDAP_REQUIRE_GROUP = (
-    LDAPGroupQuery("cn=ctf_staff,ou=ctf,dc=issessions,dc=ca")
-    | LDAPGroupQuery("cn=ctf_teams,ou=ctf,dc=issessions,dc=ca")
+    LDAPGroupQuery(CTF_STAFF_GROUP_DN)
+    | LDAPGroupQuery(CTF_TEAMS_GROUP_DN)
 )
+
+AUTH_LDAP_USER_QUERY_FIELD = 'username'
 
 # Populate the Django user from the LDAP directory.
 AUTH_LDAP_USER_ATTR_MAP = {
+    "username": "sn",
     "first_name": "givenName",
     "last_name": "sn",
     "email": "mail",
@@ -163,9 +179,9 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    "is_active": "cn=ctf_active,ou=ctf,dc=issessions,dc=ca",
-    "is_staff": "cn=ctf_staff,ou=ctf,dc=issessions,dc=ca",
-    "is_superuser": "cn=ctf_staff,ou=ctf,dc=issessions,dc=ca",
+    "is_active": ACTIVE_USERS_GROUP_DN,
+    "is_staff": CTF_STAFF_GROUP_DN,
+    "is_superuser": CTF_STAFF_GROUP_DN,
 }
 
 # This is the default, but I like to be explicit.
@@ -179,7 +195,7 @@ AUTH_LDAP_FIND_GROUP_PERMS = True
 AUTH_LDAP_CACHE_TIMEOUT = 0
 
 # TLS/SSL LDAP
-# AUTH_LDAP_START_TLS = True
+AUTH_LDAP_START_TLS = True
 
 # Keep ModelBackend around for per-user permissions and maybe a local
 # superuser.

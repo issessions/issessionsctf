@@ -4,6 +4,7 @@
 ### Developer-Defined Pattern ###
 venv/
 .idea/
+CA-key-and-cert/
 
 ### Django ###
 *.log

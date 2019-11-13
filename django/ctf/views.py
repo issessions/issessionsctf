@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
 
-from ctf.models import Challenge, Submission, Team
+from ctf.models import Challenge, Submission, Team, Flag
 
 
 def scoreboard(request):
@@ -61,27 +61,41 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
 
 @login_required(login_url="scoreboard")
 def submit_flag(request, pk):
-    team = request.user.profile.current_team
-    challenge = Challenge.objects.get(pk=pk)
-    if challenge not in team.solved.all():
-        if challenge.flag == request.POST['flag']:
-            messages.add_message(request, messages.SUCCESS, "You got the flag!")
-            team.solved.add(challenge)
-            team.score += challenge.points
+
+    submission = request.POST['flag']  # User Submission
+    team = request.user.profile.current_team  # User's Team (If Any)
+    challenge = Challenge.objects.get(pk=pk)  # Challenge
+    flag_objects = challenge.flags.all()  # All flag objects associated with the challenge
+    flag_list = [flag_object.flag for flag_object in flag_objects]  # All flag strings associated with the challenge
+    solved = submission in flag_list  # Successfully solved or not
+
+    if team is None:  # If user is authenticated but not part of a team
+        messages.add_message(request, messages.WARNING, "You must be on a team to submit a flag!")
+        return redirect(request.META['HTTP_REFERER'])
+
+    if challenge is None:  # situation not possible through GUI, protects against arbitrary submissions
+        messages.add_message(request, messages.WARNING, "Challenge does not exist!")
+        return redirect(request.META['HTTP_REFERER'])
+
+    if solved:  # If the challenge is successfully solved
+        solved_flag = flag_objects.get(flag=submission)  # retrieve the associated flag object
+        if solved_flag not in team.solved.all():  # If the team has not secured this flag before
+            team.solved.add(solved_flag)  #
+            team.score += solved_flag.points
             team.score_last = timezone.now()
-            challenge.last_solved = timezone.now()
-            challenge.solved += 1
+            solved_flag.last_solved = timezone.now()
+            solved_flag.solved += 1
+            solution = Submission(team=team, challenge=challenge, flag=solved_flag, correct=True)
             team.save()
-            solution = Submission(team=team, challenge=challenge, new_score=team.score, correct=True)
+            solved_flag.save()
             solution.save()
-            challenge.save()
+            messages.add_message(request, messages.SUCCESS, "You got the flag!")
         else:
-            if not Submission.objects.filter(team=team, challenge=challenge, correct=True).exists():
-                solution = Submission(team=team, challenge=challenge, correct=False)
-                solution.save()
-                messages.add_message(request, messages.WARNING, "Wrong flag!")
+            messages.add_message(request, messages.INFO, "Your team has already solved this challenge")
     else:
-        # They've already solved it
-        messages.add_message(request, messages.INFO, "Your team has already solved this challenge")
+        solution = Submission(team=team, challenge=challenge, correct=False)  # record failed submissions too
+        solution.save()
+        messages.add_message(request, messages.WARNING, "Wrong flag!")
 
     return redirect(request.META['HTTP_REFERER'])
+

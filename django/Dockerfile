@@ -11,6 +11,9 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN cp ./CA-key-and-cert/zentyal-samba-ca.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
