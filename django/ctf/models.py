@@ -161,7 +161,6 @@ class Team(models.Model):
     # Which hints has this team accessed
     hints = models.ManyToManyField(Flag, blank=True, related_name="hints")
 
-
     # Information about team
     name = models.CharField(max_length=64)
     active = models.BooleanField(default=False)
@@ -187,11 +186,13 @@ class Team(models.Model):
 
 
 class Submission(models.Model):
-    """A submission for a problem."""
+    """A submission for a problem"""
 
     # Link to team and problem
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='solves')
-    flag = models.ForeignKey(Flag, on_delete=models.CASCADE, related_name='solves')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="submissions")  # Which team?
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, related_name="submissions")  # Which challenge?
+    flag = models.ForeignKey(Flag, on_delete=models.CASCADE, null=True, related_name="submissions")  # Which flag?
+    # challenges can have more than 1 flag
 
     # Time and correctness
     time = models.DateTimeField(default=timezone.now)
