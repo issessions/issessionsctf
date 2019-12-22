@@ -38,3 +38,4 @@ class SubmissionAdmin(admin.ModelAdmin):
 # Register models
 admin.site.register(Contest)
 admin.site.register(Sponsor)
+admin.site.register(Sponsorship)

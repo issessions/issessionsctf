@@ -7,8 +7,9 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
+from django_auth_ldap.backend import LDAPBackend
 
-from ctf.models import Challenge, Submission, Team, Flag
+from ctf.models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
 
 
 def scoreboard(request):
@@ -19,6 +20,19 @@ def scoreboard(request):
     context = {'team_list': team_list}
     context['scoreboard_page'] = "active"
     return render(request, 'ctf/scoreboard.html', context)
+
+def sponsors(request):
+    sponsorships_list = Sponsorship.objects.all()
+    print("hello"+sponsorships_list[1].sponsor.name)
+    context = {'sponsorship_list': sponsorships_list}
+    return render(request,'ctf/sponsors.html',context)
+    
+
+def ldaptest(request):
+    context={'returnusername': 'keifer123'}
+    #ldap_backend = LDAPBackend()
+    #ldap_backend.populate_user('testuser')
+    return render(request, 'ctf/basic-template.html', context)
 
 
 def ctflogin(request):
@@ -57,7 +71,6 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         context['challenge_page'] = "active"
         context['team'] = self.request.user.profile.current_team
         return context
-
 
 @login_required(login_url="scoreboard")
 def submit_flag(request, pk):

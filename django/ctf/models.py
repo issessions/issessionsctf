@@ -12,7 +12,7 @@ class Sponsor(models.Model):
 
     name = models.CharField(max_length=256)
     text = models.TextField()
-    logo = models.FileField(upload_to='sponsor_logos/', blank=True)
+    logo = models.FileField(upload_to='images/', blank=True)
 
     def __str__(self):
         return self.name
@@ -109,7 +109,7 @@ class Challenge(models.Model):
     file = models.FileField(upload_to='uploads/', blank=True)
     active = models.BooleanField(default=True)
     dynamic_link = models.BooleanField(default=False, blank=True)
-
+    #enabled = models.BooleanField(default=True, blank=True)
     class Meta:
         ordering = ("category", "name")
 
