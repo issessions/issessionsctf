@@ -170,7 +170,10 @@ class Team(models.Model):
 
     # Some challenges (like ones with dynamic links) use a team secret or special value to build urls
     secret = models.CharField(max_length=30, default=create_secret.__func__)
-
+    # join code, so the creator of the team can invite people to the team
+    # I'm going to hold off on this until ldap is sorted
+    #join_code = models.CharField(max_length=30, default=create_secret.__func__)
+    
     # Meta model attributes
     class Meta:
         ordering = ("-score", "score_last")

@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
 from django_auth_ldap.backend import LDAPBackend
+from ctf.forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
 
 from ctf.models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
 
@@ -26,13 +27,31 @@ def sponsors(request):
     print("hello"+sponsorships_list[1].sponsor.name)
     context = {'sponsorship_list': sponsorships_list}
     return render(request,'ctf/sponsors.html',context)
-    
 
-def ldaptest(request):
-    context={'returnusername': 'keifer123'}
-    #ldap_backend = LDAPBackend()
-    #ldap_backend.populate_user('testuser')
-    return render(request, 'ctf/basic-template.html', context)
+#def join_team(request):
+
+#def create_team(request):
+
+#def edit_team(request):
+
+#def leave_team(request):
+
+#def forgot_password(request):
+
+def team_management(request):
+    joinTeamForm = JoinTeamForm()
+    createTeamForm = CreateTeamForm()
+    editTeamForm = EditTeamForm() 
+    context = {'join_form': joinTeamForm, 'create_form':createTeamForm, 'edit_form':editTeamForm}
+    return render(request, 'ctf/team-management.html', context)
+
+def change_password(request):
+    if request.method == 'GET':
+        form = NewPasswordForm()
+    else:
+        #do something! I SHOULD HAVE LDAP DONE BEFORE STARTING THIS
+        form = NewPasswordForm()
+    return render(request, 'ctf/new-password.html',{'form': form})
 
 
 def ctflogin(request):
