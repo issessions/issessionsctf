@@ -131,19 +131,19 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Baseline configuration
 
-AUTH_LDAP_SERVER_URI = "ldap://ZENTYAL.issessions.ca/"
+AUTH_LDAP_SERVER_URI = "ldap://192.168.20.10"
 
-BASE_DN = "dc=issessions,dc=ca"
-BIND_OU = "ou=applications"
-BIND_DN = "cn=django django" + "," + BIND_OU + "," + BASE_DN
-USER_SEARCH_OU = "ou=ctf"
-GROUP_SEARCH_OU = "ou=ctf"
+BASE_DN = "dc=ctf,dc=issessions,dc=ca"
+BIND_OU = "ou=competition"
+BIND_DN = "cn=django agent" + "," + BIND_OU + "," + BASE_DN
+USER_SEARCH_OU = "cn=users"
+GROUP_SEARCH_OU = "cn=groups"
 USER_SEARCH_DN = USER_SEARCH_OU + "," + BASE_DN
 GROUP_SEARCH_DN = GROUP_SEARCH_OU + "," + BASE_DN
-ACTIVE_USERS_GROUP_DN = "cn=ctf_active," + GROUP_SEARCH_DN
-DISABLED_USERS_GROUP_DN = "cn=ctf_disabled," + GROUP_SEARCH_DN
-CTF_STAFF_GROUP_DN = "cn=ctf_staff," + GROUP_SEARCH_DN
-CTF_TEAMS_GROUP_DN = "cn=ctf_teams," + GROUP_SEARCH_DN
+ACTIVE_USERS_GROUP_DN = "cn=ctf-active," + GROUP_SEARCH_DN
+DISABLED_USERS_GROUP_DN = "cn=ctf-disabled," + GROUP_SEARCH_DN
+CTF_STAFF_GROUP_DN = "cn=ctf-staff," + GROUP_SEARCH_DN
+CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 AUTH_LDAP_BIND_DN = BIND_DN
 AUTH_LDAP_BIND_PASSWORD = "django"
@@ -164,8 +164,8 @@ AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 # group restrictions
 
 AUTH_LDAP_REQUIRE_GROUP = (
-    LDAPGroupQuery(CTF_STAFF_GROUP_DN)
-    | LDAPGroupQuery(CTF_TEAMS_GROUP_DN)
+    LDAPGroupQuery(CTF_STAFF_GROUP_DN) |
+        LDAPGroupQuery(CTF_TEAMS_GROUP_DN)
 )
 
 AUTH_LDAP_USER_QUERY_FIELD = 'username'
@@ -196,7 +196,7 @@ AUTH_LDAP_FIND_GROUP_PERMS = True
 AUTH_LDAP_CACHE_TIMEOUT = 0
 
 # TLS/SSL LDAP
-AUTH_LDAP_START_TLS = True
+AUTH_LDAP_START_TLS = False
 
 # Keep ModelBackend around for per-user permissions and maybe a local
 # superuser.

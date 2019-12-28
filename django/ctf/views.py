@@ -112,7 +112,7 @@ def submit_flag(request, pk):
     if solved:  # If the challenge is successfully solved
         solved_flag = flag_objects.get(flag=submission)  # retrieve the associated flag object
         if solved_flag not in team.solved.all():  # If the team has not secured this flag before
-            team.solved.add(solved_flag)  #
+            team.solved.add(solved_flag)  
             team.score += solved_flag.points
             team.score_last = timezone.now()
             solved_flag.last_solved = timezone.now()
