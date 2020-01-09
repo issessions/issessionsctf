@@ -142,6 +142,15 @@ def submit_flag(request, pk):
     flag_objects = challenge.flags.all()  # All flag objects associated with the challenge
     flag_list = [flag_object.flag for flag_object in flag_objects]  # All flag strings associated with the challenge
     solved = submission in flag_list  # Successfully solved or not
+    hint_used = False
+    hints = team.hints.filter(challenge=challenge)
+    for f in flag_objects:
+        if f in hints:
+            hint_used = True
+            flag_penalty = f.penalty
+        else:
+            pass
+    #print(flag_penalty)
 
     if team is None:  # If user is authenticated but not part of a team
         messages.add_message(request, messages.WARNING, "You must be on a team to submit a flag!")
@@ -155,7 +164,10 @@ def submit_flag(request, pk):
         solved_flag = flag_objects.get(flag=submission)  # retrieve the associated flag object
         if solved_flag not in team.solved.all():  # If the team has not secured this flag before
             team.solved.add(solved_flag)  
-            team.score += solved_flag.points
+            if hint_used:
+                team.score += solved_flag.points - flag_penalty
+            else:
+                team.score += solved_flag.points
             team.score_last = timezone.now()
             solved_flag.last_solved = timezone.now()
             solved_flag.solved += 1
