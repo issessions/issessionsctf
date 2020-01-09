@@ -16,4 +16,5 @@ urlpatterns = [
     path('sponsors/',sponsors,name='sponsors'),
     path('change_password/',change_password, name='Change Password'),
     path('team_management/',team_management,name='Team Management'),
+    path('challenges/<int:pk>/reveal-hint/',reveal_hint, name='reveal-hint'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -146,7 +146,7 @@ CTF_STAFF_GROUP_DN = "cn=ctf-staff," + GROUP_SEARCH_DN
 CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 AUTH_LDAP_BIND_DN = BIND_DN
-AUTH_LDAP_BIND_PASSWORD = "putThePasswordHere"
+AUTH_LDAP_BIND_PASSWORD = "putpasswordhere"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sn=%(user)s)"
 )

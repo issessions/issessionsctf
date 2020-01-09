@@ -24,7 +24,7 @@ def scoreboard(request):
 
 def sponsors(request):
     sponsorships_list = Sponsorship.objects.all()
-    print("hello"+sponsorships_list[1].sponsor.name)
+    #print("hello"+sponsorships_list[1].sponsor.name)
     context = {'sponsorship_list': sponsorships_list}
     return render(request,'ctf/sponsors.html',context)
 
@@ -88,8 +88,50 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(ChallengeDetailView, self).get_context_data(**kwargs)
         context['challenge_page'] = "active"
-        context['team'] = self.request.user.profile.current_team
+        my_team = self.request.user.profile.current_team
+        context['team'] = my_team
+        
+        #checking to see if hint should be sent
+        current_challenge = context['challenge']
+        flag_objects = current_challenge.flags.all()
+        hints = my_team.hints.filter(challenge=current_challenge)
+        already_hinted = False
+        the_hint = "Reminder: Viewing the hint reduces the number of points a challenge is worth."
+
+        for f in flag_objects:
+            if f in hints:
+                already_hinted = True
+                the_hint = f.hint
+            else:
+                pass
+        if already_hinted:
+            context['hint'] = the_hint
+        else:
+            pass
+            ####
+
         return context
+
+@login_required(login_url="scoreboard")
+def reveal_hint(request, pk):
+    current_challenge = Challenge.objects.get(pk=pk)
+    team = request.user.profile.current_team
+    flag_objects = current_challenge.flags.all()
+    flag_list = [flag_object for flag_object in flag_objects]
+    hints = team.hints.filter(challenge=current_challenge)
+    already_hinted = False
+    for f in flag_objects:
+        if f in hints:
+            already_hinted = True
+        else:
+            pass
+    if already_hinted:
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        for f in flag_list: 
+            team.hints.add(f)
+    return redirect(request.META['HTTP_REFERER'])
+
 
 @login_required(login_url="scoreboard")
 def submit_flag(request, pk):
