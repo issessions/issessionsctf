@@ -20,6 +20,7 @@
         {% if sponsorship.tier == 'SILVER' %}
             <p>{{ sponsorship.sponsor.name }}</p>
             <img src="{{ sponsorship.sponsor.logo.url }}"  width="100">
+            <p> {{ sponsorship.sponsor.text }} </p>
         {% endif %}
     {% endfor %}
     <h5>Bronze sponsors</h5>

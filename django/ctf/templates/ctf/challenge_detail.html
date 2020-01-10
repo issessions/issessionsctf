@@ -45,7 +45,7 @@
                     <p>{{hint}}</p>
                <!-- <p>Reminder: Viewing the hint reduces the number of points a challenge is worth.</p>-->
                 <p><a href="" class="btn btn-primary btn-lg">Show Hint</a></p>
-                <form action="{% url 'reveal-hint' challenge.id %}" method="post">
+                <form action="{% url 'reveal-hint' challenge.id %}" method="post" class="btn btn-primary btn-lg">
                     {% csrf_token %}
                     <input type="submit" value="Show ... Hint">
                 </form>
