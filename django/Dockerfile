@@ -11,11 +11,13 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN cp ./CA-key-and-cert/zentyal-samba-ca.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+RUN if [ -f CA-key-and-cert/zentyal-samba-ca.crt ];then cp ./CA-key-and-cert/zentyal-samba-ca.crt /usr/local/share/ca-certificates/; \ 
+	update-ca-certificates; fi
 
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+RUN pip3 install --upgrade pip \
+    && pip3 install -r requirements.txt
+
+#RUN python3 -m venv ./venv && source ./venv/bin/activate
 
 RUN chmod 700 /usr/src/app/django.sh
 CMD ["/bin/bash", "-c", "bash /usr/src/app/django.sh"]
