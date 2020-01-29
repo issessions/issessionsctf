@@ -1,0 +1,157 @@
+html{
+    font-family: 'Courier New', Courier, monospace;
+}
+.chunk-grid-wrapper{
+    /*font-family: 'Courier New', Courier, monospace;*/
+    margin: 6px;
+    display: grid;
+    grid-area: header;
+    /* grid-template-columns: repeat(auto, minmax(100px, 1fr));
+    grid-column-gap: 6px;
+    grid-row-gap:6px; */
+    grid-template-columns: 
+    minmax(163px,170px) minmax(130px,138px)
+    minmax(130px,138px) minmax(107px,115px)
+    minmax(90px,98px) minmax(170px,100%);
+}
+
+.chunk-nav-item{
+    margin: 0;
+    padding: 0;
+}
+
+a, a:link, a:visited{
+    margin: 4px;
+    padding: 10px 10px;
+    text-decoration: none;
+    background-color: #C4B7AB;
+    color: #232729;
+    border: 10px outset #FAEBD7;
+    text-align: center;
+    display: inline-block;
+}
+
+a:hover{
+    text-decoration: none;
+    color: #232729;
+}
+  
+a:active {
+    color: #232729;
+    font-size: 13px;
+    background-color: #A8A097;
+    border-style: inset;
+}
+
+#chunk-home-lnk{
+    color: rgb(63, 12, 12);
+    background-color: rgb(209, 81, 81);
+    border-color: rgb(255, 121, 121);
+    grid-column: 1;
+}
+
+#chunk-scoreboard-lnk{
+    grid-column: 2;
+}
+
+#chunk-challenges-lnk{
+    grid-column: 3;
+}
+
+#chunk-sponsors-lnk{
+    padding: 10px 5px;
+    grid-column: 4;
+}
+
+#chunk-help-lnk{
+    grid-column: 5;
+}
+
+#chunk-dropdown{
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#chunk-drop-item{
+    margin: 0;
+    padding: 0;
+}
+
+/* .chunk-dropdown{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;  
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    list-style: none;
+    background-color: #DFD2C5;
+    background-clip: padding-box;
+    border: 10px outset #DFD2C5;
+} */
+
+#chunk-logout-lnk{
+    grid-column: 6;
+}
+
+#chunk-login-form{
+    display: flex;
+    flex-flow: row;
+}
+
+.chunk-login-form-wide{
+    grid-column: 6;
+    justify-content: end;
+    grid-row: 1;
+}
+
+.chunk-login-form-narrow{
+    grid-column: 1;
+    justify-content: start;
+    grid-row: 2;
+}
+
+#chunk-login-input{
+    border-radius: 0;
+    border: 10px inset #FAEBD7;
+    padding: 20px;
+    margin: 4px;
+    max-width: 300px;
+    min-width: 155px;
+    height: 64px;
+}
+
+#chunk-login-btn{
+    vertical-align: middle;
+    color: rgb(21, 68, 3);
+    border-radius: 0;
+    border: 10px outset rgb(163, 255, 127);
+    background-color: rgb(148, 216, 45);
+    padding: 10px;
+    margin: 4px;
+    max-width: 300px;
+    min-width: 90px;
+    height: 64px;
+}
+
+.chunk-bg-light{
+    background-color: #DFD2C5;
+}
+
+.chunk-main-container{
+    /* font-family: 'VT323', monospace; */
+    padding-top: 10px;
+    font-family: 'Courier Prime', monospace;
+    color: greenyellow;
+    background-color: #002222;
+    border: inset;
+    border-color: #FAEBD7;
+    border-width: 10px;
+}
+
+.off-white{
+    background-color: #DFD2C5;
+}
+

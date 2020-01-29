@@ -11,7 +11,7 @@
    ========================================================================== */
 
 html {
-    color: #222;
+    color: #F00;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -211,7 +211,7 @@ textarea {
         text-shadow: none !important;
     }
 
-    a,
+    /* a,
     a:visited {
         text-decoration: underline;
     }
@@ -222,20 +222,20 @@ textarea {
 
     abbr[title]:after {
         content: " (" attr(title) ")";
-    }
+    } */
 
     /*
      * Don't show links that are fragment identifiers,
      * or use the `javascript:` pseudo protocol
      */
-    a[href^="#"]:after,
+    /* a[href^="#"]:after,
     a[href^="javascript:"]:after {
         content: "";
     }
 
     pre {
         white-space: pre-wrap !important;
-    }
+    } */
 
     pre,
     blockquote {

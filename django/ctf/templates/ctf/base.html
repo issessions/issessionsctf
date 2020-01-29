@@ -10,76 +10,68 @@
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link href="https://fonts.googleapis.com/css?family=Courier+Prime:700|VT323&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="{% static 'ctf/css/normalize.css' %}">
     <link rel="stylesheet" href="{% static 'ctf/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'ctf/css/chunk.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
-<body>
-<!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
+<body class="off-white">
 
-<!-- Add your site or application content here -->
+<nav class="chunk-grid-wrapper off-white">
+    <a id="chunk-home-lnk" class="chunk-nav-item" href="{% url 'scoreboard' %}">
+        ISS CTF 2020
+    </a>
+    <a id="chunk-scoreboard-lnk" class="chunk-nav-item" href="{% url 'scoreboard' %}">
+        Scoreboard
+    </a>
+    <a id="chunk-challenges-lnk" class="chunk-nav-item" href="{% url 'challenge-index' %}">
+        Challenges
+    </a>
+    <a id="chunk-sponsors-lnk" class="chunk-nav-item" href="{% url 'sponsors' %}">
+        Sponsors
+    </a>
+    <a id="chunk-help-lnk" class="chunk-nav-item" href="#" id="help" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Help
+    </a>
+    <div id="chunk-dropdown" class="dropdown-menu" aria-labelledby="help">
+        <a id="chunk-drop-item" class="dropdown-item" href="#">Tutorials</a>
+        <a id="chunk-drop-item" class="dropdown-item" href="#">Tools</a>
+        <a id="chunk-drop-item" class="dropdown-item" href="#">Other</a>
+    </div>
 
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="{% url 'scoreboard' %}">ISSessions CTF 2020</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ scoreboard_page }}">
-                <a class="nav-link" href="{% url 'scoreboard' %}">Scoreboard</a>
-            </li>
-            <li class="nav-item {{ challenge_page }}">
-                <a class="nav-link" href="{% url 'challenge-index' %}">Challenges</a>
-            </li>
-            <li>
-                <a class="nav-link" href="{% url 'sponsors' %}">Sponsors</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="help" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">Help</a>
-                <div class="dropdown-menu" aria-labelledby="help">
-                    <a class="dropdown-item" href="#">Tutorials</a>
-                    <a class="dropdown-item" href="#">Tools</a>
-                    <a class="dropdown-item" href="#">Other</a>
-                </div>
+    {% if user.is_authenticated %}
+        <ul id="chunk-logout-lnk" class="chunk-nav-item">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
         </ul>
-        {% if user.is_authenticated %}
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
         {% else %}
-            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'login' %}">
+            <form id="chunk-login-form" class="chunk-login-form-wide" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
-                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username"
+                <input id="chunk-login-input" class="form-control" type="text" placeholder="Username" aria-label="Username"
                        name="username">
-                <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password"
+                <input id="chunk-login-input" class="form-control" type="password" placeholder="Password" aria-label="Password"
                        name="password">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+                <button id="chunk-login-btn" class="btn btn-outline-success" type="submit">Login</button>
             </form>
 
         {% endif %}
-    </div>
+
 </nav>
 
-<main role="main">
-    <div class="container" style="margin-top:100px;">
+
+<main role="main" class="off-white">
+    <div class="container chunk-main-container" style="margin-top:100px;">
         {% block content %}
         {% endblock %}
     </div>
 </main>
 
-<footer class="container" style="margin-top:100px;">
+<footer class="container off-white" style="margin-top:100px;">
     <p>&copy; ISSessions 2020</p>
 </footer>
 
@@ -94,8 +86,8 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script src="{% static 'ctf/js/plugins.js' %}"></script>
-<script src="{% static 'ctf/js/main.js' %}"></script>
+<script src="{% static 'ctf/js/chunk.js' %}"></script>
 
 </body>
 
-</html>-
+</html>

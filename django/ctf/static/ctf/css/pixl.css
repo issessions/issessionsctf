@@ -1,0 +1,91 @@
+.pixl-grid-wrapper{
+    margin: 8px;
+    display: grid;
+    grid-area: header;
+    /* grid-template-columns: repeat(auto, minmax(100px, 1fr));
+    grid-column-gap: 6px;
+    grid-row-gap:6px; */
+    grid-template-columns: 
+    minmax(163px,170px) minmax(130px,138px)
+    minmax(130px,138px) minmax(107px,115px)
+    minmax(90px,98px) minmax(170px,100%);
+}
+
+#pixl-home-lnk{
+    grid-column: 1;
+}
+
+#pixl-scoreboard-lnk{
+    grid-column: 2;
+}
+
+#pixl-challenges-lnk{
+    grid-column: 3;
+}
+
+#pixl-sponsors-lnk{
+    grid-column: 4;
+}
+
+#pixl-help-lnk{
+    grid-column: 5;
+}
+
+#pixl-logout-lnk{
+    grid-column: 6;
+}
+
+.pixl-nav-img{
+    margin: 0;
+    padding: 0;
+    height: 50pt;	
+}
+
+#pixl-login-form{
+    display: flex;
+    flex-flow: row;
+}
+
+.pixl-login-form-wide{
+    grid-column: 6;
+    justify-content: end;
+    grid-row: 1;
+}
+
+.pixl-login-form-narrow{
+    grid-column: 1;
+    justify-content: start;
+    grid-row: 2;
+}
+
+.pixl-login-input{
+    margin: 4px;
+    max-width: 300px;
+    min-width: 150px;
+    height: 38px;
+}
+
+.pixl-bg-light{
+    background-color: #DFD2C5;
+}
+
+.pixl-nav-item{
+    margin: 0;
+    padding: 0;
+}
+
+.pixl-main-container{
+    /* font-family: 'VT323', monospace; */
+    padding-top: 10px;
+    font-family: 'Courier Prime', monospace;
+    color: greenyellow;
+    background-color: #002222;
+    border: inset;
+    border-color: #FAEBD7;
+    border-width: 10px;
+}
+
+.off-white{
+    background-color: #DFD2C5;
+}
+
