@@ -10,8 +10,8 @@
                                           target="_blank">Go To
                     Challenge</a></p>
             {% endif %}
-            {% if challenge.file %}
-                <p class="text-center"><a href="{{ challenge.file.url }}" class="btn btn-secondary btn-lg" role="button"
+            {% if challenge.minio_file_id %}
+                <p class="text-center"><a href="{% url 'ctf-download' challenge.category challenge.minio_file_id %}" class="btn btn-secondary btn-lg" role="button"
                                           target="_blank">Download File</a></p>
             {% endif %}
 

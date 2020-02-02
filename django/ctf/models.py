@@ -89,24 +89,25 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Challenge(models.Model):
     categories = (
-        ('PROGRAMMING', 'Programming'),
-        ('CRYPTOGRAPHY', 'Cryptography'),
-        ('PACKETANALYSIS', 'Packet Analysis'),
-        ('TRIVIA', 'Trivia'),
-        ('WEBAPP', 'Web App'),
-        ('DATABASE', 'Database'),
-        ('SYSADMIN', 'SysAdmin'),
-        ('STEGANOGRAPHY', 'Steganography'),
-        ('REVERSING', 'Reversing'),
-        ('LOCKPICKING', 'Lockpicking'),
-        ('FORENSICS', 'Forensics'))
+        ('programming', 'Programming'),
+        ('cryptography', 'Cryptography'),
+        ('packetanalysis', 'Packet Analysis'),
+        ('trivia', 'Trivia'),
+        ('webapp', 'Web App'),
+        ('database', 'Database'),
+        ('sysadmin', 'SysAdmin'),
+        ('steganography', 'Steganography'),
+        ('reversing', 'Reversing'),
+        ('lockpicking', 'Lockpicking'),
+        ('forensics', 'Forensics'))
 
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     description = models.TextField()
-    category = models.CharField(max_length=30, choices=categories)
+    category = models.SlugField(max_length=30, choices=categories)
     link = models.URLField(blank=True, default="")
     file = models.FileField(upload_to='uploads/', blank=True)
+    minio_file_id = models.SlugField(unique=True, blank=True, max_length=30, default="")
     active = models.BooleanField(default=True)
     dynamic_link = models.BooleanField(default=False, blank=True)
     #enabled = models.BooleanField(default=True, blank=True)
