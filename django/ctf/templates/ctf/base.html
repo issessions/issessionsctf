@@ -12,51 +12,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Courier+Prime:700|VT323&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="{% static 'ctf/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'ctf/css/pixl.css' %}">
     <link rel="stylesheet" href="{% static 'ctf/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'ctf/css/chunk.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
+<!-- TODO: 
+    - Make Readouts look like old ascii stuff
+    - Improve depth effect
+    - make btns depress
+    
+    NICETOHAVE:
+    - More adaptive/resposive
+    - No reflow on small resolutions
+-->
+
 <body class="off-white">
 
-<nav class="chunk-grid-wrapper off-white">
-    <a id="chunk-home-lnk" class="chunk-nav-item" href="{% url 'scoreboard' %}">
-        ISS CTF 2020
+<nav class="pixl-grid-wrapper off-white">
+    <a id="pixl-home-lnk" class="pixl-nav-item" href="{% url 'scoreboard' %}">
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_home.png"/>
     </a>
-    <a id="chunk-scoreboard-lnk" class="chunk-nav-item" href="{% url 'scoreboard' %}">
-        Scoreboard
+    <a id="pixl-scoreboard-lnk" class="pixl-nav-item" href="{% url 'scoreboard' %}#scoreboard">
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_scoreboard.png"/>
     </a>
-    <a id="chunk-challenges-lnk" class="chunk-nav-item" href="{% url 'challenge-index' %}">
-        Challenges
+    <a id="pixl-challenges-lnk" class="pixl-nav-item" href="{% url 'challenge-index' %}">
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_challenges.png"/>
     </a>
-    <a id="chunk-sponsors-lnk" class="chunk-nav-item" href="{% url 'sponsors' %}">
-        Sponsors
+    <a id="pixl-sponsors-lnk" class="pixl-nav-item" href="{% url 'sponsors' %}">
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_sponsors.png"/>
     </a>
-    <a id="chunk-help-lnk" class="chunk-nav-item" href="#" id="help" data-toggle="dropdown" aria-haspopup="true"
+    <a id="pixl-help-lnk" class="pixl-nav-item dropdown-toggle" href="#" id="help" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
-        Help
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_help.png"/>
     </a>
-    <div id="chunk-dropdown" class="dropdown-menu" aria-labelledby="help">
-        <a id="chunk-drop-item" class="dropdown-item" href="#">Tutorials</a>
-        <a id="chunk-drop-item" class="dropdown-item" href="#">Tools</a>
-        <a id="chunk-drop-item" class="dropdown-item" href="#">Other</a>
+    <div class="dropdown-menu" aria-labelledby="help">
+        <a class="dropdown-item" href="#">Tutorials</a>
+        <a class="dropdown-item" href="#">Tools</a>
+        <a class="dropdown-item" href="#">Other</a>
     </div>
 
     {% if user.is_authenticated %}
-        <ul id="chunk-logout-lnk" class="chunk-nav-item">
+        <ul id="pixl-logout-lnk" class="pixl-nav-item">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
         </ul>
         {% else %}
-            <form id="chunk-login-form" class="chunk-login-form-wide" method="post" action="{% url 'login' %}">
+            <form id="pixl-login-form" class="pixl-login-form-wide" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
-                <input id="chunk-login-input" class="form-control" type="text" placeholder="Username" aria-label="Username"
+                <input id="pixl-login-input" class="form-control " type="text" placeholder="Username" aria-label="Username"
                        name="username">
-                <input id="chunk-login-input" class="form-control" type="password" placeholder="Password" aria-label="Password"
+                <input id="pixl-login-input" class="form-control " type="password" placeholder="Password" aria-label="Password"
                        name="password">
-                <button id="chunk-login-btn" class="btn btn-outline-success" type="submit">Login</button>
+                <button class="btn pixl-login-input" type="submit">
+                    <img class="pixl-nav-img" src="../../static/ctf/img/btn_login.png"/>
+                </button>
             </form>
 
         {% endif %}
@@ -65,7 +77,7 @@
 
 
 <main role="main" class="off-white">
-    <div class="container chunk-main-container" style="margin-top:100px;">
+    <div class="container pixl-main-container" style="margin-top:100px;">
         {% block content %}
         {% endblock %}
     </div>
@@ -86,7 +98,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script src="{% static 'ctf/js/plugins.js' %}"></script>
-<script src="{% static 'ctf/js/chunk.js' %}"></script>
+<script src="{% static 'ctf/js/pixl.js' %}"></script>
 
 </body>
 

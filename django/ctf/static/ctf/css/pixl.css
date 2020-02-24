@@ -1,4 +1,11 @@
+img {
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    /* image-rendering: pixelated; */
+  }
+
 .pixl-grid-wrapper{
+    align-items: center;
     margin: 8px;
     display: grid;
     grid-area: header;
@@ -6,7 +13,7 @@
     grid-column-gap: 6px;
     grid-row-gap:6px; */
     grid-template-columns: 
-    minmax(163px,170px) minmax(130px,138px)
+    minmax(215px,223px) minmax(130px,138px)
     minmax(130px,138px) minmax(107px,115px)
     minmax(90px,98px) minmax(170px,100%);
 }
@@ -49,16 +56,22 @@
 .pixl-login-form-wide{
     grid-column: 6;
     justify-content: end;
+    align-items: center;
     grid-row: 1;
 }
 
 .pixl-login-form-narrow{
     grid-column: 1;
     justify-content: start;
+    align-items: center;
     grid-row: 2;
 }
 
-.pixl-login-input{
+#pixl-login-input{
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-image: url(../img/border_pixl_small.png) 20 stretch;
+    padding: 20px 0px 20px 20px;
     margin: 4px;
     max-width: 300px;
     min-width: 150px;
@@ -72,7 +85,9 @@
 .pixl-nav-item{
     margin: 0;
     padding: 0;
+    outline: 0;
 }
+
 
 .pixl-main-container{
     /* font-family: 'VT323', monospace; */
@@ -83,9 +98,12 @@
     border: inset;
     border-color: #FAEBD7;
     border-width: 10px;
+    border: 20px solid transparent;
+    padding: 20px;
+    border-image: url(../img/border_pixl.png) 50 stretch;
 }
 
 .off-white{
-    background-color: #DFD2C5;
+    background-color: rgb(238, 233, 227);
 }
 
