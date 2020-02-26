@@ -56,6 +56,13 @@ def team_management(request):
     #createTeamForm = CreateTeamForm()
     #editTeamForm = EditTeamForm() 
     #context = {'join_form': joinTeamForm, 'create_form':createTeamForm, 'edit_form':editTeamForm}
+    '''
+        the ldap team query returns a list within a dict within a list
+            DEBUG:root:<class 'list'>
+            DEBUG:root:<class 'dict'>
+            DEBUG:root:<class 'list'>
+            DEBUG:root:<class 'bytes'>
+    '''
     ldap_object = LDAPOperator() 
     result_set = ldap_object.find_ldap_teams()
     context = {"users":result_set}
@@ -125,6 +132,11 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         else:
             pass
             ####
+        if (current_challenge.sponsored):
+            challenge_sponsor = current_challenge.sponsor
+            context['sponsor'] = challenge_sponsor
+
+
 
         return context
 
