@@ -6,8 +6,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
+import logging
 from django.views import generic
 from django_auth_ldap.backend import LDAPBackend
+from ctf.ldap_ops import LDAPOperator
 from ctf.forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
 
 from ctf.models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
@@ -38,11 +40,25 @@ def sponsors(request):
 
 #def forgot_password(request):
 
+#def sync_teams(request):
+    
+def help_tools(request):
+    return render(request, 'ctf/help-tools.html')
+
+def help_tutorials(request):
+    return render(request, 'ctf/help-tutorials.html')
+
+def help_other(request):
+    return render(request, 'ctf/help-other.html')
+
 def team_management(request):
-    joinTeamForm = JoinTeamForm()
-    createTeamForm = CreateTeamForm()
-    editTeamForm = EditTeamForm() 
-    context = {'join_form': joinTeamForm, 'create_form':createTeamForm, 'edit_form':editTeamForm}
+    #joinTeamForm = JoinTeamForm()
+    #createTeamForm = CreateTeamForm()
+    #editTeamForm = EditTeamForm() 
+    #context = {'join_form': joinTeamForm, 'create_form':createTeamForm, 'edit_form':editTeamForm}
+    ldap_object = LDAPOperator() 
+    result_set = ldap_object.find_ldap_teams()
+    context = {"users":result_set}
     return render(request, 'ctf/team-management.html', context)
 
 def change_password(request):
