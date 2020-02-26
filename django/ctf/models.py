@@ -109,6 +109,8 @@ class Challenge(models.Model):
     file = models.FileField(upload_to='uploads/', blank=True)
     active = models.BooleanField(default=True)
     dynamic_link = models.BooleanField(default=False, blank=True)
+    sponsored = models.BooleanField(default=False)
+    sponsor = models.ForeignKey(Sponsor, related_name="challenges",on_delete=models.CASCADE,blank=True,null=True)
     #enabled = models.BooleanField(default=True, blank=True)
     class Meta:
         ordering = ("category", "name")
