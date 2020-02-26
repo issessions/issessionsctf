@@ -138,17 +138,21 @@ BIND_OU = "ou=competition"
 BIND_DN = "cn=django agent" + "," + BIND_OU + "," + BASE_DN
 USER_SEARCH_OU = "cn=users"
 GROUP_SEARCH_OU = "cn=groups"
+TEAM_SEARCH_OU = "ou=Teams"
 USER_SEARCH_DN = USER_SEARCH_OU + "," + BASE_DN
+TEAM_SEARCH_DN = TEAM_SEARCH_OU + "," + BASE_DN
 GROUP_SEARCH_DN = GROUP_SEARCH_OU + "," + BASE_DN
 ACTIVE_USERS_GROUP_DN = "cn=ctf-active," + GROUP_SEARCH_DN
 DISABLED_USERS_GROUP_DN = "cn=ctf-disabled," + GROUP_SEARCH_DN
 CTF_STAFF_GROUP_DN = "cn=ctf-staff," + GROUP_SEARCH_DN
 CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
+#CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
+
 
 AUTH_LDAP_BIND_DN = BIND_DN
 AUTH_LDAP_BIND_PASSWORD = "Vc9b0XIbyH3g"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sn=%(user)s)"
+    USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"
 )
 # Or:
 # AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s,ou=users,dc=example,dc=com'
@@ -172,7 +176,7 @@ AUTH_LDAP_USER_QUERY_FIELD = 'username'
 
 # Populate the Django user from the LDAP directory.
 AUTH_LDAP_USER_ATTR_MAP = {
-    "username": "sn",
+    "username": "sAMAccountName",
     "first_name": "givenName",
     "last_name": "sn",
     "email": "mail",
@@ -194,6 +198,7 @@ AUTH_LDAP_FIND_GROUP_PERMS = True
 # Cache distinguished names and group memberships for an hour to minimize
 # LDAP traffic.
 AUTH_LDAP_CACHE_TIMEOUT = 0
+#AUTH_LDAP_MIRROR_GROUPS = True
 
 # TLS/SSL LDAP
 AUTH_LDAP_START_TLS = False
