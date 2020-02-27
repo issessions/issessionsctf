@@ -1,7 +1,14 @@
 {% extends 'ctf/base.html' %}
 {% block content %}
 
-<h2>Join Team</h2>
+
+<h1>Teams</h1>
+
+{% for u in users %}
+    <p>{{ u }}</p>
+{% endfor %}
+
+<!--<h2>Join Team</h2>
     <form>
         {{ join_form.as_p }}
         <input type="submit" value="Join">
@@ -19,5 +26,5 @@
 <h2> Abandon Team</h2>s
     <form>
         <input type="submit" value="Adandon">
-    </form>
+    </form>-->
 {% endblock %}
