@@ -4,6 +4,8 @@
         <div class="jumbotron">
             <h1 class="display-4">{{ challenge.name }}</h1>
             <hr class="my-4">
+            <p>This challenge sponsored by {{ sponsor.name}}</p>
+            <img src="{{ sponsor.logo.url }}"width="100"/>
             <p class="lead">{{ challenge.description }}<br>({{ challenge.points }} Points)</p>
             {% if challenge.link != "" %}
                 <p class="text-center"><a href="{{ challenge.link }}" class="btn btn-secondary btn-lg" role="button"
@@ -44,7 +46,7 @@
                 <h2>Hint</h2>
                     <p>{{hint}}</p>
                <!-- <p>Reminder: Viewing the hint reduces the number of points a challenge is worth.</p>-->
-                <p><a href="" class="btn btn-primary btn-lg">Show Hint</a></p>
+                <!--<p><a href="" class="btn btn-primary btn-lg">Show Hint</a></p>-->
                 <form action="{% url 'reveal-hint' challenge.id %}" method="post" class="btn btn-primary btn-lg">
                     {% csrf_token %}
                     <input type="submit" value="Show ... Hint">
