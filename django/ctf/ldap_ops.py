@@ -34,7 +34,7 @@ class LDAPOperator:
 
     def find_ldap_users(self,cn_to_find):
         try:
-            results = self.l.search_s(USER_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr=("cn="+cn_to_find), attrlist=['sAMAccountName'])
+            results = self.l.search_s(USER_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr=("cn="+cn_to_find), attrlist=['sAMAccountName','memberOf'])#
             logging.debug("searched for user")
             #for dn, attrs in results:
                 #logging.debug(dn)
@@ -59,19 +59,19 @@ class LDAPOperator:
             #logging.debug(results)
             teams = []
             counter = 0
-
-
             for team_num in range(0,len(results)):
                 team_elements = str(results[team_num]).split(',')
                 team_name = team_elements[0][5:]
                 #logging.debug(team_name)
                 #put the team in the database
-                if(Team.objects.get(name=team_name) == None):
+                try:
+                    current_team = Team.objects.get(name=team_name)
+                except:
+                    current_team = None                    
+                if(current_team == None):
                     new_team = Team(name=team_name,contest=Contest.objects.get(name='c1'))
                     new_team.save()
-                current_team = Team.objects.get(name=team_name)
                 logging.debug(current_team)
-                
                 
                 for member_num in range( 0,len(results[team_num][1]['member'])):
                     #logging.debug(type(results[team_num][1]['member'][member_num]))
@@ -83,8 +83,12 @@ class LDAPOperator:
                     #logging.debug(user_result)
                     db_username = str(user_result[0][1]['sAMAccountName'][0])
                     db_username = db_username[2:len(db_username)-1]
-                    
-                    current_team.members.add(User.objects.get(username=str(db_username)))
+                    user_to_add = User.objects.get(username=str(db_username))
+                    if user_to_add in current_team.members.all():
+                        #don't add the user because they are already there
+                        pass
+                    else:
+                        current_team.members.add(user_to_add)
 
                     
                     #grab the user objects from the DB and put them into the teams
