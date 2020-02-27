@@ -83,6 +83,7 @@ class LDAPOperator:
                     #logging.debug(user_result)
                     db_username = str(user_result[0][1]['sAMAccountName'][0])
                     db_username = db_username[2:len(db_username)-1]
+                    
                     current_team.members.add(User.objects.get(username=str(db_username)))
 
                     
