@@ -1,18 +1,26 @@
+import magic
+import mimetypes
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 import logging
 from django.views import generic
+from minio import Minio
+from minio.error import ResponseError, NoSuchKey, NoSuchBucket
+from urllib3.exceptions import MaxRetryError
 from django_auth_ldap.backend import LDAPBackend
 from ctf.ldap_ops import LDAPOperator
 from ctf.forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
 
-from ctf.models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
+from .forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
+from .models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
+
+from django.conf import settings
 
 
 def scoreboard(request):
@@ -212,4 +220,47 @@ def submit_flag(request, pk):
         messages.add_message(request, messages.WARNING, "Wrong flag!")
 
     return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required(login_url='scoreboard')
+def download(request, minio_bucket, minio_file_id):
+
+    # Initialize initial Minio Client Object
+    client = Minio(getattr(settings, 'MINIO_HOST'),
+                   access_key=getattr(settings, 'MINIO_ACCESS_KEY'),
+                   secret_key=getattr(settings, 'MINIO_SECRET_KEY'),
+                   secure=False)
+
+    # Make 2 requests for the file:
+    # Note: one request is not possible because it is not possible to rewind a live stream of bytes
+    try:
+
+        # Request #1: stream a small byte sample to determine file mimetype/proper extension
+        data = client.get_object(minio_bucket, minio_file_id)
+        sample = data.read(amt=256)
+        mime_sniffer = magic.Magic(mime=True)
+        mime_type = mime_sniffer.from_buffer(sample)
+        file_extension = mimetypes.guess_extension(type=mime_type)  # With leading dot (.zip)
+        data.close()
+
+        # Request #2: stream the whole file to facilitate its download
+        data = client.get_object(minio_bucket, minio_file_id)
+        response = StreamingHttpResponse(streaming_content=data, content_type=mime_type)
+        response['Content-Disposition'] = 'attachment;filename=' + minio_file_id + file_extension
+        return response
+
+    except NoSuchKey as nsk:
+        messages.add_message(request, messages.WARNING, "File Not Found.")
+    except NoSuchBucket as nsb:
+        messages.add_message(request, messages.WARNING, "Bucket Not Found.")
+    except MaxRetryError as mre:
+        messages.add_message(request, messages.WARNING, "Multiple attempts to contact MinIO file server have failed.")
+    except ResponseError as rspe:
+        messages.add_message(request, messages.WARNING, "HTTP Response Error.")
+    #except Exception as e:
+        #messages.add_message(request, messages.WARNING, "An internal error has occurred.")
+
+    print(request.META)
+    return redirect(to='challenge-index')
+
 
