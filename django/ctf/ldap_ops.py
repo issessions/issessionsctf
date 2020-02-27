@@ -4,6 +4,10 @@ import sys
 import logging
 from issessionsctf.settings import AUTH_LDAP_SERVER_URI, AUTH_LDAP_BIND_DN, AUTH_LDAP_BIND_PASSWORD, \
     USER_SEARCH_DN, CTF_STAFF_GROUP_DN, CTF_TEAMS_GROUP_DN, ACTIVE_USERS_GROUP_DN, DISABLED_USERS_GROUP_DN, GROUP_SEARCH_DN, TEAM_SEARCH_DN
+from ctf.models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor,Contest
+from django.contrib.auth.models import User
+
+
 
 OBJECT_CLASS_USER_SCHEMA = [b'top', b'posixAccount', b'person', b'systemQuotas',
                             b'organizationalPerson', b'user']
@@ -28,13 +32,13 @@ class LDAPOperator:
         logging.debug("LDAP Version: {0}".format(self.l.protocol_version))
         logging.debug("TLS Available: {0}".format(ldap.TLS_AVAIL))
 
-    def find_ldap_users(self):
+    def find_ldap_users(self,cn_to_find):
         try:
-            results = self.l.search_s(USER_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr="sn=*", attrlist=['sAMAccountName'])
+            results = self.l.search_s(USER_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr=("cn="+cn_to_find), attrlist=['sAMAccountName'])
             logging.debug("searched for user")
-            for dn, attrs in results:
-                logging.debug(dn)
-                logging.debug(attrs)
+            #for dn, attrs in results:
+                #logging.debug(dn)
+                #logging.debug(attrs)
             return results
         except ldap.LDAPError as le:
             logging.debug('LDAP Error: {0}'.format(le))
@@ -45,28 +49,77 @@ class LDAPOperator:
         #get the teams
         #get the members of that team
         #put the team into the database ans put the users in the database
+
+
+
     def find_ldap_teams(self):
         try:
             results = self.l.search_s(TEAM_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr="CN=*", attrlist=['member'])
             #logging.debug(type(results))
             #logging.debug(results)
-            real_result = results[0]
-            team_info = real_result[0]
-            member_dict = real_result[1]
-            members = []
-            logging.debug("The team info is: "+str(team_info)+" which is " + str(type(team_info)))
-            team_info_parsed = str(team_info).split(',')
-            logging.debug(team_info_parsed)
+            teams = []
+            counter = 0
+
+
+            for team_num in range(0,len(results)):
+                team_elements = str(results[team_num]).split(',')
+                team_name = team_elements[0][5:]
+                #logging.debug(team_name)
+                #put the team in the database
+                if(Team.objects.get(name=team_name) == None):
+                    new_team = Team(name=team_name,contest=Contest.objects.get(name='c1'))
+                    new_team.save()
+                current_team = Team.objects.get(name=team_name)
+                logging.debug(current_team)
+                
+                
+                for member_num in range( 0,len(results[team_num][1]['member'])):
+                    #logging.debug(type(results[team_num][1]['member'][member_num]))
+                    #logging.debug(results[team_num][1]['member'][member_num])
+                    member_info = str(results[team_num][1]['member'][member_num]).split(',')
+                    member_cn = member_info[0][5:]
+                    #logging.debug(member_cn)
+                    user_result = self.find_ldap_users(member_cn)
+                    #logging.debug(user_result)
+                    db_username = str(user_result[0][1]['sAMAccountName'][0])
+                    db_username = db_username[2:len(db_username)-1]
+                    current_team.members.add(User.objects.get(username=str(db_username)))
+
+                    
+                    #grab the user objects from the DB and put them into the teams
+                    #logging.debug(type(user_result[0][1]['sAMAccountName'][0]))
+
+
+                    
+
+            #logging.debug(results[1]['member'])
+            #logging.debug(results[2])
+            #logging.debug(results[3]['member'])
+            #for team_result in results:
+            #    teams.append()
+            #    counter+=2
+            #logging.debug(teams)    
+            #for team in teams:
+                #logging.debug(team[2:])
+                #load_team(team[2:], Contest.objects.get(name='c1'))
+            
+            #real_result = results[0]
+            #team_info = real_result[0]
+            #member_dict = real_result[1]
+            #members = []
+            #logging.debug("The team info is: "+str(team_info)+" which is " + str(type(team_info)))
+            #team_info_parsed = str(team_info).split(',')
+            #logging.debug(team_info_parsed)
             #logging.debug("the memeber dict is: "+str(member_dict))
-            member_list = member_dict['member']
+            #member_list = member_dict['member']
             #logging.debug("the memeber List is: "+str(member_list))
-            for member in member_list:
-                #logging.debug(member)
+            #for member in member_list:
+            #    logging.debug(member)
                 #logging.debug(type(member))
-                temp = str(member)
-                temp = temp[2:]
+            #    temp = str(member)
+            #    temp = temp[2:]
                 #logging.debug(temp)
-                members.append( temp.split(',')) 
+            #    members.append( temp.split(',')) 
                 
             #logging.debug(members)
 
