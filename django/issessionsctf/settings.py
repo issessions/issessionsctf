@@ -20,7 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2^f+3@v7$v1f8yt0!se3-1t$5tlp+xm17=*gno_xoi&&9m#2a&'
+#SECRET_KEY = '2^f+3@v7$v1f8yt0!se3-1t$5tlp+xm17=*gno_xoi&&9m#2a&'
+
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -74,20 +76,20 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '$DB_NAME',
-        'USER': '$DB_USER',
-        'PASSWORD': '$DB_PASS',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASS'],
 	# Container name
-        'HOST': '$DB_ADDRESS',
-        'PORT': '$DB_PORT',
+        'HOST': os.environ['DB_ADDRESS'],
+        'PORT': os.environ['DB_PORT'],
     }
 }
 
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-	## Container name, port
-        'LOCATION': '$MEMCACHED_ADDRESS:$MEMCACHED_PORT',
+	## Container name : port
+	'LOCATION': os.environ['MEMCACHED_ADDRESS'] + ':' + os.environ['MEMCACHED_PORT'],
     }
 }
 
@@ -133,7 +135,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Baseline configuration
 
-AUTH_LDAP_SERVER_URI = "ldap://$LDAP_ADDRESS"
+AUTH_LDAP_SERVER_URI = "ldap://" + os.environ['LDAP_ADDRESS']
 
 BASE_DN = "dc=ctf,dc=issessions,dc=ca"
 BIND_OU = "ou=competition"
@@ -151,8 +153,8 @@ CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 #CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 
-AUTH_LDAP_BIND_DN = $LDAP_BIND_DN
-AUTH_LDAP_BIND_PASSWORD = "$LDAP_BIND_PASSWORD"
+AUTH_LDAP_BIND_DN = BIND_DN
+AUTH_LDAP_BIND_PASSWORD = os.environ['LDAP_BIND_PASSWORD']
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"
 )
