@@ -19,5 +19,8 @@ RUN pip3 install --upgrade pip \
 
 #RUN python3 -m venv ./venv && source ./venv/bin/activate
 
+# Set date & time to Canada/Eastern
+RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime
+
 RUN chmod 700 /usr/src/app/django.sh
 CMD ["/bin/bash", "-c", "bash /usr/src/app/django.sh"]

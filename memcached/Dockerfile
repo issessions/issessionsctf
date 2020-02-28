@@ -73,6 +73,9 @@ RUN set -x \
 	\
 	&& memcached -V
 
+# Set date & time to Canada/Eastern
+RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime
+
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
