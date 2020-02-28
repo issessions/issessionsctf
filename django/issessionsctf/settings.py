@@ -74,18 +74,20 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'iss',
-        'USER': 'issessions',
-        'PASSWORD': 'issessions',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': '$DB_NAME',
+        'USER': '$DB_USER',
+        'PASSWORD': '$DB_PASS',
+	# Container name
+        'HOST': '$DB_ADDRESS',
+        'PORT': '$DB_PORT',
     }
 }
 
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        'LOCATION': 'localhost:11211',
+	## Container name, port
+        'LOCATION': '$MEMCACHED_ADDRESS:$MEMCACHED_PORT',
     }
 }
 
@@ -131,7 +133,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Baseline configuration
 
-AUTH_LDAP_SERVER_URI = "ldap://192.168.20.10"
+AUTH_LDAP_SERVER_URI = "ldap://$LDAP_ADDRESS"
 
 BASE_DN = "dc=ctf,dc=issessions,dc=ca"
 BIND_OU = "ou=competition"
@@ -149,8 +151,8 @@ CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 #CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 
-AUTH_LDAP_BIND_DN = BIND_DN
-AUTH_LDAP_BIND_PASSWORD = "Vc9b0XIbyH3g"
+AUTH_LDAP_BIND_DN = $LDAP_BIND_DN
+AUTH_LDAP_BIND_PASSWORD = "$LDAP_BIND_PASSWORD"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"
 )
