@@ -1,8 +1,8 @@
 #!/bin/bash
 ### USAGE ###
 # NOTE: Quotes & commas will break this scripe
-# example: ./challenge_import.sh challenges.csv
-# This script takes one CSV file as an argument
+# example: ./challenge_import.sh
+# This script takes any # of csv files in the directory /usr/src/app or ./django on the host and imports them into the database
 
 #Removes first line of CSV file, and starts the import statments @ line 2
 function import_csv {
@@ -13,10 +13,12 @@ function import_csv {
 	done
 }
 
-start="NOW()"
-end="(NOW() - INTERVAL '1 day')"
-psql -U postgres -h postgresql -d iss -c "INSERT INTO ctf_contest values(1, 'contest_name', 't', $start::TIMESTAMPTZ, $end::TIMESTAMPTZ)"
-
-for i in $(find /usr/src/app/ -name "*.csv"); do \
-        import_csv $i; \
+contest_created=0
+for i in $(find /usr/src/app/ -name "*.csv"); do
+	if [ $contest_created == 0 ]; then
+		#Creates contest, in order for challenge imports to work there needed to be a contest with the ID of 1
+		psql -U postgres -h postgresql -d iss -c "INSERT INTO ctf_contest values(1, '$CONTEST_NAME', '$CONTEST_ACTIVE', $CONTEST_START::TIMESTAMPTZ, $CONTEST_END::TIMESTAMPTZ)"
+		contest_created=1
+	fi
+        import_csv $i;
 done
