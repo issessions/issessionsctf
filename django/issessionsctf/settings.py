@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['PGPASSWORD'],
-        'USER': os.environ['PGPASSWORD'],
-	'PASSWORD': 'postgres',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+	'PASSWORD': os.environ['DB_PASS'],
         'HOST': os.environ['DB_ADDRESS'],
         'PORT': os.environ['DB_PORT'],
     }
