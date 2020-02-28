@@ -6,9 +6,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     help = 'Sync teams from the LDAP server to the Postgresql DB'
-    
     def handle(self, *args, **options):
         ldap_object = LDAPOperator() 
         result_set = ldap_object.find_ldap_teams()
         logging.debug(result_set)
-        #context = {"users":result_set}

@@ -36,51 +36,40 @@ class LDAPOperator:
         try:
             results = self.l.search_s(USER_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr=("cn="+cn_to_find), attrlist=['sAMAccountName','memberOf'])#
             logging.debug("searched for user")
-            #for dn, attrs in results:
-                #logging.debug(dn)
-                #logging.debug(attrs)
             return results
         except ldap.LDAPError as le:
             logging.debug('LDAP Error: {0}'.format(le))
         except Exception as e:
             logging.debug('Error: {0}'.format(e))
 
-    #we need to:
-        #get the teams
-        #get the members of that team
-        #put the team into the database ans put the users in the database
-
-
 
     def find_ldap_teams(self):
         try:
+            # This is the LDAP query that gets all the teams and their members
             results = self.l.search_s(TEAM_SEARCH_DN, ldap.SCOPE_SUBTREE, filterstr="CN=*", attrlist=['member'])
-            #logging.debug(type(results))
-            #logging.debug(results)
-            teams = []
-            counter = 0
+            # For all the teams in the list of teams
             for team_num in range(0,len(results)):
+                # split the elements of the team into a LIST
                 team_elements = str(results[team_num]).split(',')
+                # take only the name of the team i.e. cut out some random LDAP cruft
                 team_name = team_elements[0][5:]
-                #logging.debug(team_name)
-                #put the team in the database
+                # Try to get the team out of the database,
+                # if it works it means the team is already in there
                 try:
                     current_team = Team.objects.get(name=team_name)
                 except:
-                    current_team = None                    
+                    current_team = None   
+
+                #put the team in the database if it isn't already in there                 
                 if(current_team == None):
                     new_team = Team(name=team_name,contest=Contest.objects.get(name='c1'))
-                    new_team.save()
-                logging.debug(current_team)
-                
+                    new_team.save()     
+                # for every user that is a member of that team, get their sAMAccountName out of the LDAP and use it to 
+                # get their name user object and put it in the memebers field of the Database           
                 for member_num in range( 0,len(results[team_num][1]['member'])):
-                    #logging.debug(type(results[team_num][1]['member'][member_num]))
-                    #logging.debug(results[team_num][1]['member'][member_num])
                     member_info = str(results[team_num][1]['member'][member_num]).split(',')
                     member_cn = member_info[0][5:]
-                    #logging.debug(member_cn)
                     user_result = self.find_ldap_users(member_cn)
-                    #logging.debug(user_result)
                     db_username = str(user_result[0][1]['sAMAccountName'][0])
                     db_username = db_username[2:len(db_username)-1]
                     user_to_add = User.objects.get(username=str(db_username))
@@ -89,53 +78,6 @@ class LDAPOperator:
                         pass
                     else:
                         current_team.members.add(user_to_add)
-
-                    
-                    #grab the user objects from the DB and put them into the teams
-                    #logging.debug(type(user_result[0][1]['sAMAccountName'][0]))
-
-
-                    
-
-            #logging.debug(results[1]['member'])
-            #logging.debug(results[2])
-            #logging.debug(results[3]['member'])
-            #for team_result in results:
-            #    teams.append()
-            #    counter+=2
-            #logging.debug(teams)    
-            #for team in teams:
-                #logging.debug(team[2:])
-                #load_team(team[2:], Contest.objects.get(name='c1'))
-            
-            #real_result = results[0]
-            #team_info = real_result[0]
-            #member_dict = real_result[1]
-            #members = []
-            #logging.debug("The team info is: "+str(team_info)+" which is " + str(type(team_info)))
-            #team_info_parsed = str(team_info).split(',')
-            #logging.debug(team_info_parsed)
-            #logging.debug("the memeber dict is: "+str(member_dict))
-            #member_list = member_dict['member']
-            #logging.debug("the memeber List is: "+str(member_list))
-            #for member in member_list:
-            #    logging.debug(member)
-                #logging.debug(type(member))
-            #    temp = str(member)
-            #    temp = temp[2:]
-                #logging.debug(temp)
-            #    members.append( temp.split(',')) 
-                
-            #logging.debug(members)
-
-            #for dn, attrs in results:
-                #logging.debug(dn)
-                #logging.debug(type(attrs))
-                #logging.debug(type(attrs['member']))
-                #logging.debug(type(attrs['member'][0]))
-                #for key in attrs:
-                 #   logging.debug(type(key))
-                  #  logging.debug(key)
             return results
         except ldap.LDAPError as le:
             logging.debug('LDAP Error: {0}'.format(le))
