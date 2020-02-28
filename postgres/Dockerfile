@@ -1,9 +1,7 @@
 
 FROM postgres:latest
 
-COPY create_user.sql /docker-entrypoint-initdb.d/
-
-# Set date & time to Canada/Eastern
-RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime
+COPY create_user.sh timezone.sql /docker-entrypoint-initdb.d/
+COPY create_user.sql /home
 
 CMD ["postgres"]
