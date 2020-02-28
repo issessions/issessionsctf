@@ -73,13 +73,13 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-	# Container name
+        'NAME': os.environ['PGPASSWORD'],
+        'USER': os.environ['PGPASSWORD'],
+	'PASSWORD': 'postgres',
         'HOST': os.environ['DB_ADDRESS'],
         'PORT': os.environ['DB_PORT'],
     }
@@ -116,7 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Canada/Eastern'
 
 USE_I18N = True
 
