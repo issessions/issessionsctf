@@ -12,6 +12,7 @@
                                           target="_blank">Go To
                     Challenge</a></p>
             {% endif %}
+            <p>{{ sysadmin_url }}</p>
             {% if challenge.minio_file_id %}
                 <p class="text-center"><a href="{% url 'ctf-download' challenge.category challenge.minio_file_id %}" class="btn btn-secondary btn-lg" role="button"
                                           target="_blank">Download File</a></p>

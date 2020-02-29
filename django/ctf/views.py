@@ -8,6 +8,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
+import hashlib
 import logging
 from django.views import generic
 from minio import Minio
@@ -122,8 +123,17 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         my_team = self.request.user.profile.current_team
         context['team'] = my_team
         
-        #checking to see if hint should be sent
         current_challenge = context['challenge']
+        context['sysadmin_url'] = "not a sysadmin chal"
+        if (current_challenge.category == "sysadmin"):
+            team_hash = hashlib.md5(str(my_team.secret).encode('utf-8'))  #.encode('utf-8')
+            team_hash = team_hash.hexdigest()
+            sysadmin_url = "sysadmin-api-url.com/" + current_challenge.name + '/' + my_team.name + '/' + str(team_hash  )  
+            logging.debug(sysadmin_url)   
+            context['sysadmin_url'] = sysadmin_url
+        
+
+        #checking to see if hint should be sent
         flag_objects = current_challenge.flags.all()
         hints = my_team.hints.filter(challenge=current_challenge)
         already_hinted = False

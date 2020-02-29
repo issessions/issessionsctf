@@ -62,8 +62,8 @@ class LDAPOperator:
 
                 #put the team in the database if it isn't already in there                 
                 if(current_team == None):
-                    new_team = Team(name=team_name,contest=Contest.objects.get(name='c1'))
-                    new_team.save()     
+                    current_team = Team(name=team_name,contest=Contest.objects.get(name='c1'),active=True)
+                    current_team.save()     
                 # for every user that is a member of that team, get their sAMAccountName out of the LDAP and use it to 
                 # get their name user object and put it in the memebers field of the Database           
                 for member_num in range( 0,len(results[team_num][1]['member'])):
