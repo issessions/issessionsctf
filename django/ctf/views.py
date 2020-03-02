@@ -10,6 +10,7 @@ from django.shortcuts import render
 from django.utils import timezone
 import hashlib
 import logging
+import base64
 from django.views import generic
 from minio import Minio
 from minio.error import ResponseError, NoSuchKey, NoSuchBucket
@@ -17,7 +18,7 @@ from urllib3.exceptions import MaxRetryError
 from django_auth_ldap.backend import LDAPBackend
 from ctf.ldap_ops import LDAPOperator
 from ctf.forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
-
+import pyotp
 from .forms import NewPasswordForm, CreateTeamForm, EditTeamForm, JoinTeamForm
 from .models import Challenge, Submission, Team, Flag, Sponsorship, Sponsor
 
@@ -126,9 +127,18 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         current_challenge = context['challenge']
         context['sysadmin_url'] = "not a sysadmin chal"
         if (current_challenge.category == "sysadmin"):
-            team_hash = hashlib.md5(str(my_team.secret).encode('utf-8'))  #.encode('utf-8')
-            team_hash = team_hash.hexdigest()
-            sysadmin_url = "sysadmin-api-url.com/" + current_challenge.name + '/' + my_team.name + '/' + str(team_hash  )  
+            #generate a otp using the team secret as the seed
+            team_secret = my_team.secret
+            challenge_name = current_challenge.name
+            team_name = my_team.name
+            totp = pyotp.TOTP(base64.b32encode(team_secret.encode()))
+            my_totp = totp.now()
+            logging.debug(my_totp)
+            #concatinate the challenge name, team, and otp, this is the value you use int the url
+            valueToHash = challenge_name + team_name + my_totp
+            url_hash = hashlib.md5(valueToHash.encode('utf-8'))  #.encode('utf-8')
+            url_hash = url_hash.hexdigest()
+            sysadmin_url = "sysadmin-api-url.com/" + challenge_name + '/' + team_name + '/' + self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
             context['sysadmin_url'] = sysadmin_url
         
