@@ -77,6 +77,16 @@ img {
     min-width: 150px;
     height: 38px;
 }
+#pixl-logout-input{
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-image: url(../img/border_pixl_small.png) 20 stretch;
+    padding: 20px 0px 20px 20px;
+    margin: 4px;
+    max-width: 300px;
+    min-width: 150px;
+    height: 38px;
+}
 
 .pixl-bg-light{
     background-color: #DFD2C5;
@@ -106,4 +116,5 @@ img {
 .off-white{
     background-color: rgb(238, 233, 227);
 }
+
 

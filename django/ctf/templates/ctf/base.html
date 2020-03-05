@@ -54,24 +54,26 @@
     </div>
 
     {% if user.is_authenticated %}
-    <a id="pixl-logout-lnk" class="pixl-nav-img" href="{% url 'logout' %}">
-        <img class="pixl-nav-img" src="../../static/ctf/img/btn_logout.png"/>
-    </a>
+    
+    <form id="pixl-logout-form" style="justify-self: right;" action="{% url 'logout' %}">
+        <label style="font-family: 'Courier Prime', monospace;">Logged in as: {{user.username}}</label>
+        <button class="btn pixl-logout-input" type="submit">
+            <img class="pixl-nav-img" src="../../static/ctf/img/btn_logout.png"/>
+        </button>
+    </form>
 
-        {% else %}
-            <form id="pixl-login-form" class="pixl-login-form-wide" method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                <input id="pixl-login-input" class="form-control " type="text" placeholder="Username" aria-label="Username"
-                       name="username">
-                <input id="pixl-login-input" class="form-control " type="password" placeholder="Password" aria-label="Password"
-                       name="password">
-                <button class="btn pixl-login-input" type="submit">
-                    <img class="pixl-nav-img" src="../../static/ctf/img/btn_login.png"/>
-                </button>
-            </form>
-
-        {% endif %}
-
+    {% else %}
+        <form id="pixl-login-form" class="pixl-login-form-wide" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input id="pixl-login-input" class="form-control " type="text" placeholder="Username" aria-label="Username"
+                name="username">
+            <input id="pixl-login-input" class="form-control " type="password" placeholder="Password" aria-label="Password"
+               name="password">
+            <button class="btn pixl-login-input" type="submit">
+                <img class="pixl-nav-img" src="../../static/ctf/img/btn_login.png"/>
+            </button>
+        </form>
+    {% endif %}
 </nav>
 
 
