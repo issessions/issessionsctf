@@ -1,33 +1,37 @@
 {% extends 'ctf/base.html' %}
 {% block content %}
-    <h2>Title sponsor</h2>
+    <h2 style="text-align: center;">Title Sponsor</h2>
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'TITLE' %}
-            <p> {{ sponsorship.sponsor.name }} </p>
-           <img src="{{ sponsorship.sponsor.logo.url }}"  width="200"> 
+            <!--<p> {{ sponsorship.sponsor.name }} </p>-->
+           <img src="{{ sponsorship.sponsor.logo.url }}"  width="1000"> 
            <!-- <img src="/sponsors/sponsor_logos/Bell_logo.png"> -->
         {% endif %} 
     {% endfor %}
-    <h3>Gold sponsor</h3>
+    <h3 style="text-align: center;">Platinum</h3>
+    <p style="text-align: center;" >
+    {% for sponsorship in sponsorship_list %}
+        {% if sponsorship.tier == 'PLATINUM' %}
+            <img src="{{ sponsorship.sponsor.logo.url }}"  width="300">
+        {% endif %}
+    {% endfor %}
+    </p>
+    <h4 style="text-align: center;">Gold</h4>
+    <p style="text-align: center;" >
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'GOLD' %}
-            <p>{{ sponsorship.sponsor.name }}</p>
-            <img src="{{ sponsorship.sponsor.logo.url }}"  width="150">
+            <!--<p>{{ sponsorship.sponsor.name }}</p>-->
+            <img src="{{ sponsorship.sponsor.logo.url }}"  width="550">
         {% endif %}
     {% endfor %}
-    <h4>Silver sponsors</h4>
+    </p>
+    <h5 style="text-align: center;">Community</h5>
+    <p style="text-align: center;" >
     {% for sponsorship in sponsorship_list %}
-        {% if sponsorship.tier == 'SILVER' %}
-            <p>{{ sponsorship.sponsor.name }}</p>
-            <img src="{{ sponsorship.sponsor.logo.url }}"  width="100">
-            <p> {{ sponsorship.sponsor.text }} </p>
+        {% if sponsorship.tier == 'COMMUNITY' %}
+           <!-- <p>{{ sponsorship.sponsor.name }}</p>-->
+            <img src="{{ sponsorship.sponsor.logo.url }}"  width="200">
         {% endif %}
     {% endfor %}
-    <h5>Bronze sponsors</h5>
-    {% for sponsorship in sponsorship_list %}
-        {% if sponsorship.tier == 'BRONZE' %}
-            <p>{{ sponsorship.sponsor.name }}</p>
-            <img src="{{ sponsorship.sponsor.logo.url }}"  width="50">
-        {% endif %}
-    {% endfor %}
+    </p>
 {% endblock %}

@@ -13,6 +13,7 @@ class Sponsor(models.Model):
     name = models.CharField(max_length=256)
     text = models.TextField()
     logo = models.FileField(upload_to='images/', blank=True)
+    
 
     def __str__(self):
         return self.name
@@ -47,9 +48,9 @@ class Sponsorship(models.Model):
 
     tiers = (
         ('TITLE', 'Title Sponsor'),
+        ('PLATINUM', 'Platinum Sponsor'),
         ('GOLD', 'Gold Sponsor'),
-        ('SILVER', 'Silver Sponsor'),
-        ('BRONZE', 'Bronze Sponsor')
+        ('COMMUNITY', 'Community Sponsor')
     )
 
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
