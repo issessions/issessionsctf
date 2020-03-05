@@ -131,7 +131,7 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
             team_secret = my_team.secret
             challenge_name = current_challenge.name
             team_name = my_team.name
-            totp = pyotp.TOTP(base64.b32encode(team_secret.encode()))
+            totp = pyotp.TOTP(base64.b32encode(team_secret.encode()),interval=600)
             my_totp = totp.now()
             logging.debug(my_totp)
             #concatinate the challenge name, team, and otp, this is the value you use int the url
@@ -141,8 +141,6 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
             sysadmin_url = "sysadmin-api-url.com/" + challenge_name + '/' + team_name + '/' + self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
             context['sysadmin_url'] = sysadmin_url
-        
-
         #checking to see if hint should be sent
         flag_objects = current_challenge.flags.all()
         hints = my_team.hints.filter(challenge=current_challenge)

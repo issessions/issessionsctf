@@ -1,18 +1,22 @@
 {% extends 'ctf/base.html' %}
 {% block content %}
     <div class="container">
-        <div class="jumbotron">
+        <div class="jumbotron" style="background-color:#002222; border :yellowgreen; border-style:  dashed dotted;">
             <h1 class="display-4">{{ challenge.name }}</h1>
             <hr class="my-4">
-            <p>This challenge sponsored by {{ sponsor.name}}</p>
-            <img src="{{ sponsor.logo.url }}"width="100"/>
+            {% if sponsor != Null %}
+                <h2>This challenge sponsored by {{ sponsor.name }}</h2>
+                <img src="{{ sponsor.logo.url }}"width="100"/>
+            {% endif %}
             <p class="lead">{{ challenge.description }}<br>({{ challenge.points }} Points)</p>
             {% if challenge.link != "" %}
                 <p class="text-center"><a href="{{ challenge.link }}" class="btn btn-secondary btn-lg" role="button"
                                           target="_blank">Go To
                     Challenge</a></p>
             {% endif %}
-            <p>{{ sysadmin_url }}</p>
+            {%if sysadmin_url != "not a sysadmin chal"%}
+                <p>{{ sysadmin_url }}</p>
+            {% endif %}
             {% if challenge.minio_file_id %}
                 <p class="text-center"><a href="{% url 'ctf-download' challenge.category challenge.minio_file_id %}" class="btn btn-secondary btn-lg" role="button"
                                           target="_blank">Download File</a></p>

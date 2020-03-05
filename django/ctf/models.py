@@ -107,7 +107,7 @@ class Challenge(models.Model):
     category = models.SlugField(max_length=30, choices=categories)
     link = models.URLField(blank=True, default="")
     file = models.FileField(upload_to='uploads/', blank=True)
-    minio_file_id = models.SlugField(unique=True, blank=True, max_length=30, default="")
+    minio_file_id = models.SlugField( blank=True, max_length=30)
     active = models.BooleanField(default=True)
     dynamic_link = models.BooleanField(default=False, blank=True)
     sponsored = models.BooleanField(default=False)

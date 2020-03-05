@@ -54,12 +54,10 @@
     </div>
 
     {% if user.is_authenticated %}
-        <ul id="pixl-logout-lnk" class="pixl-nav-item">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    <a id="pixl-logout-lnk" class="pixl-nav-img" href="{% url 'logout' %}">
+        <img class="pixl-nav-img" src="../../static/ctf/img/btn_logout.png"/>
+    </a>
 
-            </li>
-        </ul>
         {% else %}
             <form id="pixl-login-form" class="pixl-login-form-wide" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
