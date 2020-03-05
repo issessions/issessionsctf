@@ -138,9 +138,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 AUTH_LDAP_SERVER_URI = "ldap://" + os.environ['LDAP_ADDRESS']
 
-BASE_DN = "dc=ctf,dc=issessions,dc=ca"
-BIND_OU = "ou=competition"
-BIND_DN = "cn=django agent" + "," + BIND_OU + "," + BASE_DN
+BASE_DN = os.environ['BASE_DN']
+BIND_OU = os.environ['BIND_OU']
+BIND_DN = os.environ['BIND_DN']
 USER_SEARCH_OU = "cn=users"
 GROUP_SEARCH_OU = "cn=groups"
 TEAM_SEARCH_OU = "ou=Teams"
