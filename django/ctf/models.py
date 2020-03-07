@@ -100,7 +100,8 @@ class Challenge(models.Model):
         ('steganography', 'Steganography'),
         ('reversing', 'Reversing'),
         ('lockpicking', 'Lockpicking'),
-        ('forensics', 'Forensics'))
+        ('forensics', 'Forensics'),
+        ('dataanalysis','Data Analysis'))
 
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
