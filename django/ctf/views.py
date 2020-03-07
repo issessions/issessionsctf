@@ -39,18 +39,6 @@ def sponsors(request):
     #print("hello"+sponsorships_list[1].sponsor.name)
     context = {'sponsorship_list': sponsorships_list}
     return render(request,'ctf/sponsors.html',context)
-
-#def join_team(request):
-
-#def create_team(request):
-
-#def edit_team(request):
-
-#def leave_team(request):
-
-#def forgot_password(request):
-
-#def sync_teams(request):
     
 def help_tools(request):
     return render(request, 'ctf/help-tools.html')
@@ -62,17 +50,6 @@ def help_other(request):
     return render(request, 'ctf/help-other.html')
 
 def team_management(request):
-    #joinTeamForm = JoinTeamForm()
-    #createTeamForm = CreateTeamForm()
-    #editTeamForm = EditTeamForm() 
-    #context = {'join_form': joinTeamForm, 'create_form':createTeamForm, 'edit_form':editTeamForm}
-    '''
-        the ldap team query returns a list within a dict within a list
-            DEBUG:root:<class 'list'>
-            DEBUG:root:<class 'dict'>
-            DEBUG:root:<class 'list'>
-            DEBUG:root:<class 'bytes'>
-    '''
     ldap_object = LDAPOperator() 
     result_set = ldap_object.find_ldap_teams()
     context = {"users":result_set}
@@ -113,7 +90,6 @@ class ChallengeIndexView(LoginRequiredMixin, generic.ListView):
         context['challenge_page'] = "active"
         return context
 
-
 class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
     model = Challenge
     login_url = "/"
@@ -123,7 +99,7 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         context['challenge_page'] = "active"
         my_team = self.request.user.profile.current_team
         context['team'] = my_team
-        
+
         current_challenge = context['challenge']
         context['sysadmin_url'] = "not a sysadmin chal"
         if (current_challenge.category == "sysadmin"):
@@ -161,8 +137,6 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         if (current_challenge.sponsored):
             challenge_sponsor = current_challenge.sponsor
             context['sponsor'] = challenge_sponsor
-
-
 
         return context
 

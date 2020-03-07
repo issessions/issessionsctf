@@ -5,7 +5,7 @@
             <h1 class="display-4">{{ challenge.name }}</h1>
             <hr class="my-4">
             {% if sponsor != Null %}
-                <h2>This challenge sponsored by {{ sponsor.name }}</h2>
+                <h2>This challenge sponsored by</h2>
                 <img src="{{ sponsor.logo.url }}"width="200"/>
             {% endif %}
             <p class="lead">{{ challenge.description }}<br>({{ challenge.points }} Points)</p>
