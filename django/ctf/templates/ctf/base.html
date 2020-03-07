@@ -57,7 +57,7 @@
     
     <form id="pixl-logout-form" style="justify-self: right;" action="{% url 'logout' %}">
         <label style="font-family: 'Courier Prime', monospace;">Logged in as: {{user.username}}</label>
-        <button class="btn pixl-logout-input" type="submit">
+        <button class="  pixl-logout-btn" type="submit">
             <img class="pixl-nav-img" src="../../static/ctf/img/btn_logout.png"/>
         </button>
     </form>
@@ -69,7 +69,7 @@
                 name="username">
             <input id="pixl-login-input" class="form-control " type="password" placeholder="Password" aria-label="Password"
                name="password">
-            <button class="btn pixl-login-input" type="submit">
+            <button class="pixl-login-btn" type="submit">
                 <img class="pixl-nav-img" src="../../static/ctf/img/btn_login.png"/>
             </button>
         </form>

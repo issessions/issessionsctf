@@ -1,3 +1,4 @@
+
 img {
     image-rendering: auto;
     image-rendering: crisp-edges;
@@ -38,8 +39,14 @@ img {
     grid-column: 5;
 }
 
-#pixl-logout-lnk{
-    grid-column: 6;
+.pixl-logout-btn{
+    border: none;
+    cursor: pointer;
+}
+
+.pixl-login-btn{
+    border: none;
+    cursor: pointer;
 }
 
 .pixl-nav-img{
@@ -77,16 +84,8 @@ img {
     min-width: 150px;
     height: 38px;
 }
-#pixl-logout-input{
-    border-top: 6px solid transparent;
-    border-left: 6px solid transparent;
-    border-image: url(../img/border_pixl_small.png) 20 stretch;
-    padding: 20px 0px 20px 20px;
-    margin: 4px;
-    max-width: 300px;
-    min-width: 150px;
-    height: 38px;
-}
+
+
 
 .pixl-bg-light{
     background-color: #DFD2C5;
