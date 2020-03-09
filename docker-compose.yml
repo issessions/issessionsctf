@@ -11,8 +11,8 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-    #ports:
-    #  - ${APP_PORT}:80
+    ports:
+      - 80:80
     depends_on:
       - "gunicorn"
     logging:
@@ -28,6 +28,13 @@ services:
     container_name: django-dev
     volumes:
     - ./django:/usr/src/app
+    command: "gunicorn issessionsctf.wsgi:application --workers=5 -b 0.0.0.0:8002"
+    expose:
+      - 8002
+    logging:
+      options:
+        max-size: "200k"
+        max-file: "10"
 #  django:
 #    image: iss-dev:django
 #    network_mode: host

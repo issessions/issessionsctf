@@ -6,3 +6,4 @@ pylibmc==1.6.1
 minio==5.0.7
 python-magic==0.4.15
 pyotp==2.3.0
+gunicorn==19.9.0
