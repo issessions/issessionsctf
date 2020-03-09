@@ -112,9 +112,9 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
             logging.debug(my_totp)
             #concatinate the challenge name, team, and otp, this is the value you use int the url
             valueToHash = challenge_name + team_name + my_totp
-            url_hash = hashlib.md5(valueToHash.encode('utf-8'))  #.encode('utf-8')
+            url_hash = hashlib.sha256(valueToHash.encode('utf-8'))  #.encode('utf-8')
             url_hash = url_hash.hexdigest()
-            team_name_hash= hashlib.md5(team_name.encode())
+            team_name_hash= hashlib.sha256(team_name.encode())
             team_name_hash = team_name_hash.hexdigest()
             sysadmin_url = "sysadmin-api-url.com/" + challenge_name + '/' + str(team_name_hash)[0:10] + '/' + self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
