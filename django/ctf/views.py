@@ -105,18 +105,16 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
         if (current_challenge.category == "sysadmin"):
             #generate a otp using the team secret as the seed
             team_secret = my_team.secret
-            challenge_name = current_challenge.name
-            team_name = my_team.name
+            challenge_id = current_challenge.challenge_id
+            team_id = my_team.team_id
             totp = pyotp.TOTP(base64.b32encode(team_secret.encode()),interval=600)
             my_totp = totp.now()
             logging.debug(my_totp)
-            #concatinate the challenge name, team, and otp, this is the value you use int the url
-            valueToHash = challenge_name + team_name + my_totp
+            #concatenate the challenge name, team, and otp, this is the value you use int the url
+            valueToHash = challenge_id + team_id + my_totp
             url_hash = hashlib.sha256(valueToHash.encode('utf-8'))  #.encode('utf-8')
             url_hash = url_hash.hexdigest()
-            team_name_hash= hashlib.sha256(team_name.encode())
-            team_name_hash = team_name_hash.hexdigest()
-            sysadmin_url = "sysadmin-api-url.com/"  + str(team_name_hash)[0:10] + '/' + self.request.user.username + '/' + str( url_hash )  
+            sysadmin_url = "sysadmin-api-url.com/"  + challenge_id +'/'+ team_id+'/'+ self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
             context['sysadmin_url'] = sysadmin_url
         #checking to see if hint should be sent

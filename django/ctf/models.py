@@ -103,14 +103,14 @@ class Challenge(models.Model):
         ('forensics', 'Forensics'),
         ('dataanalysis','Data Analysis'),
         ('threathunting','Threat Hunting'))
-
+    challenge_id = models.CharField(blank=False,unique=True,max_length=40)
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     description = models.TextField()
     category = models.SlugField(max_length=30, choices=categories)
     link = models.URLField(blank=True, default="")
     file = models.FileField(upload_to='uploads/', blank=True)
-    minio_file_id = models.SlugField( blank=True, max_length=30)
+    minio_file_id = models.CharField( blank=True, max_length=30)
     active = models.BooleanField(default=True)
     dynamic_link = models.BooleanField(default=False, blank=True)
     sponsored = models.BooleanField(default=False)
@@ -157,7 +157,7 @@ class Team(models.Model):
 
     # Competition
     contest = models.ForeignKey(Contest, related_name="teams", on_delete=models.CASCADE)
-
+    team_id = secret = models.CharField(max_length=30, default=create_secret.__func__)
     # Team members
     members = models.ManyToManyField(User, blank=True, related_name="teams")
 
