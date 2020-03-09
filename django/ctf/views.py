@@ -116,7 +116,7 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
             url_hash = url_hash.hexdigest()
             team_name_hash= hashlib.sha256(team_name.encode())
             team_name_hash = team_name_hash.hexdigest()
-            sysadmin_url = "sysadmin-api-url.com/" + challenge_name + '/' + str(team_name_hash)[0:10] + '/' + self.request.user.username + '/' + str( url_hash )  
+            sysadmin_url = "sysadmin-api-url.com/"  + str(team_name_hash)[0:10] + '/' + self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
             context['sysadmin_url'] = sysadmin_url
         #checking to see if hint should be sent
