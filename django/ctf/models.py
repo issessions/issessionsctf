@@ -94,6 +94,7 @@ class Challenge(models.Model):
         ('cryptography', 'Cryptography'),
         ('packetanalysis', 'Packet Analysis'),
         ('trivia', 'Trivia'),
+        ('sponsoredworkshops', 'Sponsored Workshops'),
         ('webapp', 'Web App'),
         ('database', 'Database'),
         ('sysadmin', 'SysAdmin'),
@@ -102,7 +103,8 @@ class Challenge(models.Model):
         ('lockpicking', 'Lockpicking'),
         ('forensics', 'Forensics'),
         ('dataanalysis','Data Analysis'),
-        ('threathunting','Threat Hunting'))
+        ('threathunting','Threat Hunting')
+        )
     challenge_id = models.CharField(blank=False,unique=True,max_length=40)
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
