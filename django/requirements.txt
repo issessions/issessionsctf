@@ -1,8 +1,0 @@
-Django==2.2.6
-pytz==2019.3
-psycopg2==2.8.4
-django-auth-ldap==2.0.0
-pylibmc==1.6.1
-minio==5.0.7
-python-magic==0.4.15
-pyotp==2.3.0

@@ -1,28 +1,17 @@
-version: '3.4'
+version: '3.5'
+
 services:
-  django:
-    image: iss-dev:django
-    network_mode: host
-    build: 
-      context: ./django
-    depends_on:
-    - postgres
-    - memcached
-    container_name: django-dev
-    volumes:
-    - ./django:/usr/src/app
 
   postgres:
-    image: iss-dev:postgres
+    image: postgres
+    container_name: prod-postgresql
     network_mode: host
-    build:
-      context: ./postgres
-    container_name: postgresql
+    environment:
+      POSTGRES_USER: "issessions"
+      POSTGRES_PASSWORD: "issessions"
+      POSTGRES_DB: "iss"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data/:/var/lib/postgresql/data/pgdata
 
-  memcached:
-    image: iss-dev:memcached
-    network_mode: host
-    build:
-      context: ./memcached
-    container_name: memcached
-
+    
