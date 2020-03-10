@@ -17,24 +17,24 @@ class Command(BaseCommand):
         trend.name = "Trend Micro"
         trend.text = "hello"
         trend.save()
-'''
+
         bell = Sponsor()
-        bell.logo = open('logos/bell.png', 'rb').read()
+        #bell.logo = open('logos/bell.png', 'rb').read()
         bell.name = "Bell"
         bell.save()
 
         deloitte = Sponsor()
-        deloitte.logo = open('logos/deloite.png', 'rb').read()
+        #deloitte.logo = open('logos/deloite.png', 'rb').read()
         deloitte.name = "Deloitte"
         deloitte.save()
 
         compass = Sponsor()
-        compass.logo = open('logos/compass.png', 'rb').read()
+        #compass.logo = open('logos/compass.png', 'rb').read()
         compass.name = "Security Compass"
         compass.save()
 
         vontel = Sponsor()
-        vontel.logo = open('logos/vontel.png', 'rb').read()
+        #vontel.logo = open('logos/vontel.png', 'rb').read()
         vontel.name = "Vontel"
         vontel.save()
 
@@ -93,5 +93,3 @@ class Command(BaseCommand):
 
 
 
-
-'''
