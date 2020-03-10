@@ -72,10 +72,10 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'iss',
-        'USER': 'issessions',
-        'PASSWORD': 'issessions',
-        'HOST': 'localhost',
+        'NAME': 'CTF',
+        'USER': 'keifer_admin',
+        'PASSWORD': '',
+        'HOST': '192.168.20.30',
         'PORT': '5432',
     }
 }
@@ -83,7 +83,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        'LOCATION': 'localhost:11211',
+        'LOCATION': '192.168.20.20:11211',
     }
 }
 
@@ -148,7 +148,7 @@ CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 
 AUTH_LDAP_BIND_DN = BIND_DN
-AUTH_LDAP_BIND_PASSWORD = "Vc9b0XIbyH3g"
+AUTH_LDAP_BIND_PASSWORD = "dF0BsNg2Sbsc76lj"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"
 )
