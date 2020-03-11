@@ -20,6 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = '2^f+3@v7$v1f8yt0!se3-1t$5tlp+xm17=*gno_xoi&&9m#2a&'
 
+#print(os.getenv('SECRET)'))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -133,11 +134,10 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Baseline configuration
 
-AUTH_LDAP_SERVER_URI = "ldap://" + os.environ['LDAP_ADDRESS']
-
+AUTH_LDAP_SERVER_URI = "ldap://192.168.20.10"
 BASE_DN = os.environ['BASE_DN']
 BIND_OU = os.environ['BIND_OU']
-BIND_DN = os.environ['BIND_DN']
+BIND_DN = "cn=django agent" + "," + BIND_OU + "," + BASE_DN
 USER_SEARCH_OU = "cn=users"
 GROUP_SEARCH_OU = "cn=groups"
 TEAM_SEARCH_OU = "ou=Teams"
