@@ -1,50 +1,54 @@
 import logging
 from ctf.models import Sponsorship, Sponsor, Contest
 from django.core.management.base import BaseCommand, CommandError
+from django.core.files import File
 
 class Command(BaseCommand):
     help = 'Sync teams from the LDAP server to the Postgresql DB'
     def handle(self, *args, **options):
         #initalize the contest
 
+        #if( Contest.objects.all() == None ):
+        #    logging.debug("no Contest")
+          
         new_contest = Contest()
         new_contest.name = "ctf2020"
         new_contest.active = True
         new_contest.save()
 
         trend = Sponsor()
-        #trend.logo = open('logos/trend.png', 'rb').read()
+        trend.logo = File(open('trend.png', 'rb'))
         trend.name = "Trend Micro"
         trend.text = "hello"
         trend.save()
 
         bell = Sponsor()
-        #bell.logo = open('logos/bell.png', 'rb').read()
+        bell.logo = File(open('bell.png', 'rb'))
         bell.name = "Bell"
         bell.save()
 
         deloitte = Sponsor()
-        #deloitte.logo = open('logos/deloite.png', 'rb').read()
+        deloitte.logo = File(open('deloite.png', 'rb'))
         deloitte.name = "Deloitte"
         deloitte.save()
 
         compass = Sponsor()
-        #compass.logo = open('logos/compass.png', 'rb').read()
+        compass.logo = File(open('compass.png', 'rb'))
         compass.name = "Security Compass"
         compass.save()
 
         vontel = Sponsor()
-        #vontel.logo = open('logos/vontel.png', 'rb').read()
+        vontel.logo = File(open('vontel.png', 'rb'))
         vontel.name = "Vontel"
         vontel.save()
 
         sheridan = Sponsor()
-        #sheridan.logo = open('logos/sheridan', 'rb').read()
+        sheridan.logo = File(open('sheridan.png', 'rb'))
         sheridan.name = "Sheridan College"
         sheridan.save()
 
         ssu = Sponsor()
-        #ssu.logo = open('logos/ssu', 'rb').read()
+        ssu.logo = File(open('ssu.png', 'rb'))
         ssu.name = "SSU"
         ssu.save()
         

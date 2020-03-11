@@ -13,7 +13,7 @@
                 <p><a href="{{ challenge.link }}" class="btn btn-secondary btn-lg" role="button" target="_blank">Get connection info</a></p>
             {% endif %}
             {% if sysadmin_url != "not a sysadmin chal" %}
-                <a href="//{{ sysadmin_url }}" class="btn btn-secondary btn-lg">Get connection info</a>
+                <a href="{{ sysadmin_url }}" class="btn btn-secondary btn-lg">Get connection info</a>
             {% endif %}
             {% if challenge.minio_file_id %}
                 <p class="text-center"><a href="{% url 'ctf-download' challenge.category challenge.minio_file_id %}" class="btn btn-secondary btn-lg" role="button"

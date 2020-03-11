@@ -114,7 +114,7 @@ class ChallengeDetailView(LoginRequiredMixin, generic.DetailView):
             valueToHash = challenge_id + team_id + my_totp
             url_hash = hashlib.sha256(valueToHash.encode('utf-8'))  #.encode('utf-8')
             url_hash = url_hash.hexdigest()
-            sysadmin_url = "sysadmin-api-url.com/"  + challenge_id +'/'+ team_id+'/'+ self.request.user.username + '/' + str( url_hash )  
+            sysadmin_url = " http://sysadmin.ctf.issessions.ca"  + challenge_id +'/'+ team_id+'/'+ self.request.user.username + '/' + str( url_hash )  
             logging.debug(sysadmin_url)   
             context['sysadmin_url'] = sysadmin_url
         #checking to see if hint should be sent
