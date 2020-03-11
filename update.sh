@@ -2,4 +2,4 @@
 
 git checkout gunicorn-prod-merge && \
 git pull && \
-docker-compose -f up --build --no-deps -d
+docker-compose up --build --no-deps -d
