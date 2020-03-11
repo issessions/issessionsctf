@@ -4,7 +4,7 @@ services:
   gunicorn:
     image: iss-prod:scoreboard01
     env_file:
-      - /scoreboard01/env/environment.env
+      - /scoreboard/env/environment.env
     container_name: iss_prod_scoreboard01
     build: ./django
     restart: unless-stopped
