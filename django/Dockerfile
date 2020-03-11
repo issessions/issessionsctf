@@ -22,4 +22,8 @@ RUN pip3 install --upgrade pip \
     && pip3 install -r requirements.txt
 RUN cp /usr/share/zoneinfo/America/Toronto /etc/localtime
 
-CMD ["gunicorn", "issessionsctf.wsgi:application", "--workers=5", "-b", "0.0.0.0:80"]
+# Set date & time to Canada/Eastern
+RUN cp /usr/share/zoneinfo/America/Toronto /etc/localtime
+
+RUN chmod 700 /usr/src/app/django.sh
+CMD ["/bin/bash", "-c", "bash /usr/src/app/django.sh"]
