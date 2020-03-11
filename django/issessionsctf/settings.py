@@ -18,7 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2^f+3@v7$v1f8yt0!se3-1t$5tlp+xm17=*gno_xoi&&9m#2a&'
+#SECRET_KEY = '2^f+3@v7$v1f8yt0!se3-1t$5tlp+xm17=*gno_xoi&&9m#2a&'
+
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -69,14 +71,15 @@ WSGI_APPLICATION = 'issessionsctf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'CTF',
-        'USER': 'keifer_admin',
-        'PASSWORD': '',
-        'HOST': '192.168.20.30',
-        'PORT': '5432',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+	'PASSWORD': os.environ['DB_PASS'],
+        'HOST': os.environ['DB_ADDRESS'],
+        'PORT': os.environ['DB_PORT'],
     }
 }
 
@@ -110,7 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Canada/Eastern'
 
 USE_I18N = True
 
@@ -129,11 +133,11 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Baseline configuration
 
-AUTH_LDAP_SERVER_URI = "ldap://192.168.20.10"
+AUTH_LDAP_SERVER_URI = "ldap://" + os.environ['LDAP_ADDRESS']
 
-BASE_DN = "dc=ctf,dc=issessions,dc=ca"
-BIND_OU = "ou=competition"
-BIND_DN = "cn=django agent" + "," + BIND_OU + "," + BASE_DN
+BASE_DN = os.environ['BASE_DN']
+BIND_OU = os.environ['BIND_OU']
+BIND_DN = os.environ['BIND_DN']
 USER_SEARCH_OU = "cn=users"
 GROUP_SEARCH_OU = "cn=groups"
 TEAM_SEARCH_OU = "ou=Teams"
@@ -148,7 +152,7 @@ CTF_TEAMS_GROUP_DN = "cn=ctf-participant," + GROUP_SEARCH_DN
 
 
 AUTH_LDAP_BIND_DN = BIND_DN
-AUTH_LDAP_BIND_PASSWORD = ""
+AUTH_LDAP_BIND_PASSWORD = os.environ['LDAP_BIND_PASSWORD']
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     USER_SEARCH_DN, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"
 )

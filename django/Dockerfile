@@ -20,5 +20,6 @@ RUN if [ -f CA-key-and-cert/zentyal-samba-ca.crt ];then cp ./CA-key-and-cert/zen
 
 RUN pip3 install --upgrade pip \
     && pip3 install -r requirements.txt
+RUN cp /usr/share/zoneinfo/America/Toronto /etc/localtime
 
 CMD ["gunicorn", "issessionsctf.wsgi:application", "--workers=5", "-b", "0.0.0.0:80"]
