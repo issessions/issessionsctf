@@ -82,7 +82,7 @@ class ChallengeIndexView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'challenge_list'
 
     def get_queryset(self):
-        challenge_list = Challenge.objects.filter(active=True).order_by('category')
+        challenge_list = Challenge.objects.filter(active=True).order_by('category', 'flags')
         return challenge_list
 
     def get_context_data(self, **kwargs):

@@ -117,9 +117,6 @@ class Challenge(models.Model):
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     #enabled = models.BooleanField(default=True, blank=True)
 
-    #class Meta:
-    #    ordering = ("category")
-
     @staticmethod
     def current(**kwargs):
         """Filter active competitions."""
