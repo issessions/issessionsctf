@@ -102,21 +102,19 @@ class Challenge(models.Model):
         ('reversing', 'Reversing'),
         ('lockpicking', 'Lockpicking'),
         ('forensics', 'Forensics'),
-        ('dataanalysis','Data Analysis'),
-        ('threathunting','Threat Hunting')
+        ('dataanalysis', 'Data Analysis'),
+        ('threathunting', 'Threat Hunting')
         )
-    challenge_id = models.CharField(blank=False,unique=True,max_length=40)
-    contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    challenge_id = models.CharField(blank=False, unique=True, max_length=256)
+    name = models.CharField(max_length=256)
     description = models.TextField()
-    category = models.SlugField(max_length=30, choices=categories)
+    category = models.SlugField(max_length=256, choices=categories)
     link = models.URLField(blank=True, default="")
-    file = models.FileField(upload_to='uploads/', blank=True)
-    minio_file_id = models.CharField( blank=True, max_length=30)
+    minio_file_id = models.CharField(blank=True, max_length=256)
     active = models.BooleanField(default=True)
-    dynamic_link = models.BooleanField(default=False, blank=True)
     sponsored = models.BooleanField(default=False)
-    sponsor = models.ForeignKey(Sponsor, related_name="challenges",on_delete=models.CASCADE,blank=True,null=True)
+    sponsor = models.ForeignKey(Sponsor, related_name="challenges", on_delete=models.CASCADE, blank=True, null=True)
+    contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     #enabled = models.BooleanField(default=True, blank=True)
     class Meta:
         ordering = ("category", "name")
@@ -138,8 +136,9 @@ class Challenge(models.Model):
 
 
 class Flag(models.Model):
-    name = models.CharField(max_length=200)
-    flag = models.CharField(max_length=50)
+    flag_id = models.CharField(blank=False, unique=True, max_length=256)
+    name = models.CharField(max_length=256, unique=True)
+    flag = models.CharField(max_length=256)
     points = models.IntegerField()
     hint = models.TextField()
     penalty = models.IntegerField()

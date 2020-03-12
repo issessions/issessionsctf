@@ -23,7 +23,8 @@ class ChallengeAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     list_display = ('name', 'category', 'points', 'flag_count', 'active')
     list_filter = ('category',)
-    fields = [('challenge_id'),('contest', 'active'),('sponsored','sponsor'), ('name', 'category'), ('link', 'dynamic_link'), ('file'),('minio_file_id'),('description')]
+    fields = ['challenge_id', ('contest', 'active'), ('sponsored', 'sponsor'), ('name', 'category'), 'link',
+              'minio_file_id', 'description']
     inlines = [FlagInline]
 
 
