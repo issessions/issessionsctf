@@ -7,7 +7,7 @@
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'TITLE' %}
         <div class="col my-auto" align="center">
-           <img src="{{ sponsorship.sponsor.logo.url }}"  width="1000"> 
+           <img src="{{ sponsorship.sponsor.logo.url }}"  width="90%"> 
         </div>
         {% endif %} 
     {% endfor %}
@@ -20,7 +20,7 @@
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'PLATINUM' %}
         <div class="col my-auto" align="center">
-            <img src="{{ sponsorship.sponsor.logo.url }}"  width="275">
+            <img src="{{ sponsorship.sponsor.logo.url }}"  width="50%">
         </div>
         {% endif %}
     {% endfor %}
@@ -34,7 +34,7 @@
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'GOLD' %}
         <div class="col my-auto" align="center">
-            <img src="{{ sponsorship.sponsor.logo.url }}"  width="500">
+            <img src="{{ sponsorship.sponsor.logo.url }}"  width="60%">
         </div>
         {% endif %}
     {% endfor %}
@@ -47,7 +47,7 @@
     {% for sponsorship in sponsorship_list %}
         {% if sponsorship.tier == 'COMMUNITY' %}
         <div class="col my-auto" align="center">
-                <img src="{{ sponsorship.sponsor.logo.url }}"  width="200">
+                <img src="{{ sponsorship.sponsor.logo.url }}"  width="60%">
         </div>
         {% endif %}
     {% endfor %}
