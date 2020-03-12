@@ -116,8 +116,9 @@ class Challenge(models.Model):
     sponsor = models.ForeignKey(Sponsor, related_name="challenges", on_delete=models.CASCADE, blank=True, null=True)
     contest = models.ForeignKey(Contest, related_name="challenges", on_delete=models.CASCADE)
     #enabled = models.BooleanField(default=True, blank=True)
-    class Meta:
-        ordering = ("category", "name")
+
+    #class Meta:
+    #    ordering = ("category")
 
     @staticmethod
     def current(**kwargs):
@@ -145,6 +146,9 @@ class Flag(models.Model):
     solved = models.IntegerField(default=0)
     last_solved = models.DateTimeField(blank=True, null=True)
     challenge = models.ForeignKey(Challenge, related_name="flags", on_delete=models.CASCADE, blank=True)
+
+    class Meta:
+        ordering = ("challenge__category", "points")
 
     def __str__(self):
         return self.name
